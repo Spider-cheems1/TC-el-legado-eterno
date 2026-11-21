@@ -203,6 +203,38 @@
                 </div>
             </div>
 
+            <!-- PANEL DE CARRERA: VELOCIDAD, KILOMETRAJE, INTEGRIDAD Y NITRO -->
+            <div id="raceHud" class="hidden absolute top-[4.5rem] sm:top-20 left-2 sm:left-3 z-20 w-36 sm:w-44 bg-black/75 border-2 border-zinc-600 p-1.5 sm:p-2 pointer-events-none flex flex-col gap-1">
+                <div class="flex justify-between items-baseline">
+                    <div>
+                        <span id="hudSpeed" class="font-doom text-sm sm:text-lg text-red-500 doom-text-shadow">000</span>
+                        <span class="text-[10px] sm:text-xs text-zinc-300">KM/H</span>
+                    </div>
+                </div>
+                <div class="flex justify-between text-[10px] sm:text-xs">
+                    <span class="text-zinc-400">RECORRIDO</span>
+                    <span class="text-amber-300 font-bold"><span id="hudKm">0.00</span> KM</span>
+                </div>
+                <div>
+                    <div class="flex justify-between text-[10px] sm:text-xs">
+                        <span class="text-zinc-300">INTEGRIDAD</span>
+                        <span id="hudHealthText" class="text-emerald-400 font-bold">100%</span>
+                    </div>
+                    <div class="w-full h-2.5 sm:h-3 bg-zinc-950 border border-zinc-700 p-0.5">
+                        <div id="hudHealthBar" class="h-full bg-emerald-500 transition-all duration-100" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-[10px] sm:text-xs">
+                        <span class="text-sky-300">NITRO</span>
+                        <span id="hudNitroText" class="text-sky-400 font-bold">50%</span>
+                    </div>
+                    <div class="w-full h-2.5 sm:h-3 bg-zinc-950 border border-zinc-700 p-0.5">
+                        <div id="hudNitroBar" class="h-full bg-sky-400 transition-all duration-100" style="width: 50%"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- CAJA DE CAMBIOS HISTÓRICA TÁCTIL (Visible solo en Modo Manual durante carrera) -->
             <div id="manualShifterPanel" class="hidden absolute right-2 sm:right-4 top-12 sm:top-14 z-20 doom-metal p-1.5 sm:p-2 flex flex-col items-center pointer-events-auto shadow-2xl">
                 <div id="shifterModelLabel" class="font-doom text-[8px] sm:text-[9px] text-amber-300 mb-1 tracking-tight text-center">CAJA 3M (H)</div>
@@ -1176,6 +1208,7 @@ const STATE = {
     playerX: 0,          // -1 (borde izq) a +1 (borde der), fuera de [-1, 1] es banquina
     positionZ: 0,        // Posición longitudinal en la pista
     speed: 0,            // Velocidad actual en km/h
+    distanceKm: 0,       // Kilometraje recorrido en la carrera
     steer: 0,            // Ángulo de giro actual
     health: 100,         // Integridad chasis/motor
     nitro: 50,           // Energía espiritual (0 a 100)
@@ -1335,6 +1368,7 @@ function startRace(eraIdx, circuitIdx) {
     STATE.playerX = 0;
     STATE.positionZ = 0;
     STATE.speed = 0;
+    STATE.distanceKm = 0;
     STATE.steer = 0;
     STATE.manualGear = 1;
     STATE.shifterAnimY = 0;
@@ -1355,6 +1389,7 @@ function startRace(eraIdx, circuitIdx) {
     hideAllScreens();
     document.getElementById('btnPause').classList.remove('hidden');
     document.getElementById('btnCameraToggle').classList.remove('hidden');
+    document.getElementById('raceHud').classList.remove('hidden');
     updateCameraUI();
     updateTransmissionUI();
 
@@ -1476,6 +1511,7 @@ function finishRace() {
     document.getElementById('touchControls').classList.add('hidden');
     document.getElementById('manualShifterPanel').classList.add('hidden');
     document.getElementById('shiftLightsBar').classList.add('hidden');
+    document.getElementById('raceHud').classList.add('hidden');
 
     const pos = STATE.playerRank;
     const isPodium = pos <= 3;
@@ -1546,6 +1582,7 @@ function showMenu() {
     document.getElementById('touchControls').classList.add('hidden');
     document.getElementById('manualShifterPanel').classList.add('hidden');
     document.getElementById('shiftLightsBar').classList.add('hidden');
+    document.getElementById('raceHud').classList.add('hidden');
     updateSaveBadge();
     updateCameraUI();
     updateTransmissionUI();
@@ -2026,6 +2063,9 @@ function updatePhysics(dt) {
     const absoluteCap = car.maxSpeed * nitroMult * healthPenalty;
     STATE.speed = Math.max(0, Math.min(absoluteCap, STATE.speed));
 
+    // Kilometraje recorrido (km/h * horas)
+    STATE.distanceKm += STATE.speed * dt / 3600;
+
     // Dirección y fuerza centrífuga en curvas
     const currentSegIdx = Math.floor(STATE.positionZ / STATE.segmentLength) % STATE.segments.length;
     const currentSeg = STATE.segments[currentSegIdx];
@@ -2169,8 +2209,27 @@ function calculateGearAndRpm(speed, maxSpeed, totalGears) {
     return { gear: gearNum.toString(), rpm, rpmRatio };
 }
 
-// Con la barra inferior eliminada, solo queda la luz de cambio (Shift Lights) de la caja manual
+// Panel de carrera (velocidad, kilometraje, integridad, nitro) + luces de cambio de la caja manual
 function updateHUD(gearInfo) {
+    // Velocímetro y kilometraje recorrido
+    document.getElementById('hudSpeed').textContent = Math.floor(STATE.speed).toString().padStart(3, '0');
+    document.getElementById('hudKm').textContent = STATE.distanceKm.toFixed(2);
+
+    // Barra de integridad del auto
+    const hp = Math.round(STATE.health);
+    document.getElementById('hudHealthText').textContent = `${hp}%`;
+    const hpBar = document.getElementById('hudHealthBar');
+    hpBar.style.width = `${hp}%`;
+    hpBar.className = `h-full transition-all duration-100 ${hp > 50 ? 'bg-emerald-500' : (hp > 25 ? 'bg-amber-500' : 'bg-red-600')}`;
+
+    // Barra de nitro
+    const nt = Math.round(STATE.nitro);
+    document.getElementById('hudNitroText').textContent = `${nt}%`;
+    const ntBar = document.getElementById('hudNitroBar');
+    ntBar.style.width = `${nt}%`;
+    ntBar.className = `h-full transition-all duration-100 ${STATE.isNitroActive ? 'bg-yellow-300' : 'bg-sky-400'}`;
+
+    // Shift Lights para Caja Manual
     if (STATE.transmission === 'MANUAL') {
         const colors = ['#22c55e', '#22c55e', '#eab308', '#ef4444', '#38bdf8'];
         for (let s = 0; s < 5; s++) {
