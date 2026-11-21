@@ -420,74 +420,6 @@
             </div>
         </div>
 
-        <!-- BARRA DE ESTADO INFERIOR CLÁSICA ESTILO DOOM 1993 -->
-        <div id="doomHud" class="doom-metal h-24 sm:h-28 w-full px-2 py-1.5 sm:px-4 sm:py-2 grid grid-cols-12 gap-1.5 sm:gap-3 items-center shrink-0 z-20">
-            
-            <!-- BLOQUE 1: VELOCIDAD, MARCHA Y RPM (4 cols) -->
-            <div class="col-span-4 doom-inset h-full p-1.5 sm:p-2 flex flex-col justify-between">
-                <div class="flex justify-between items-baseline">
-                    <div>
-                        <span id="hudSpeed" class="font-doom text-base sm:text-2xl text-red-500 doom-text-shadow">000</span>
-                        <span class="text-[10px] sm:text-xs text-zinc-400">KM/H</span>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-[10px] sm:text-xs text-zinc-400">MARCHA</span>
-                        <span id="hudGear" class="font-doom text-sm sm:text-xl text-amber-400 ml-1">N</span>
-                    </div>
-                </div>
-                <!-- Barra LED de RPM -->
-                <div class="w-full">
-                    <div class="flex justify-between text-[9px] sm:text-[11px] text-zinc-400 mb-0.5">
-                        <span>RPM</span>
-                        <span id="hudRpmText">1000</span>
-                    </div>
-                    <div id="rpmBarContainer" class="w-full h-2.5 sm:h-3 bg-zinc-950 border border-zinc-700 flex gap-0.5 p-0.5">
-                        <!-- 12 segmentos LED generados por JS -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- BLOQUE 2: POSICIÓN Y VUELTA (2 cols) -->
-            <div class="col-span-2 doom-inset h-full p-1 sm:p-2 flex flex-col items-center justify-center text-center">
-                <div class="text-[9px] sm:text-xs text-zinc-400">POSICIÓN</div>
-                <div id="hudPos" class="font-doom text-sm sm:text-xl text-yellow-400 my-0.5">12/12</div>
-                <div id="hudLap" class="text-[10px] sm:text-xs text-emerald-400 font-bold">VUELTA 1/3</div>
-            </div>
-
-            <!-- BLOQUE 3: RETRATO ANIMADO PIXEL-ART DEL ESPÍRITU GUÍA (2 cols) -->
-            <div class="col-span-2 h-full flex flex-col items-center justify-center">
-                <div class="doom-inset p-0.5 sm:p-1 bg-zinc-950 relative">
-                    <canvas id="hudPortraitCanvas" width="64" height="64" class="w-12 h-12 sm:w-16 sm:h-16 block"></canvas>
-                </div>
-                <div id="hudSpiritTag" class="font-doom text-[8px] sm:text-[9px] text-amber-300 mt-0.5 truncate max-w-full">FANGIO</div>
-            </div>
-
-            <!-- BLOQUE 4: INTEGRIDAD CHASIS Y ESPÍRITU / NITRO (4 cols) -->
-            <div class="col-span-4 doom-inset h-full p-1.5 sm:p-2 flex flex-col justify-between">
-                <!-- Integridad / Salud del Auto -->
-                <div>
-                    <div class="flex justify-between text-[9px] sm:text-xs">
-                        <span class="text-zinc-300">CHASIS/MOTOR</span>
-                        <span id="hudHealthText" class="text-emerald-400 font-bold">100%</span>
-                    </div>
-                    <div class="w-full h-2.5 sm:h-3 bg-zinc-950 border border-zinc-700 p-0.5">
-                        <div id="hudHealthBar" class="h-full bg-emerald-500 transition-all duration-100" style="width: 100%"></div>
-                    </div>
-                </div>
-
-                <!-- Barra de Espíritu / Nitro -->
-                <div>
-                    <div class="flex justify-between text-[9px] sm:text-xs">
-                        <span class="text-sky-300">ESPÍRITU NITRO</span>
-                        <span id="hudNitroText" class="text-sky-400 font-bold">50%</span>
-                    </div>
-                    <div class="w-full h-2.5 sm:h-3 bg-zinc-950 border border-zinc-700 p-0.5">
-                        <div id="hudNitroBar" class="h-full bg-sky-400 transition-all duration-100" style="width: 50%"></div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
     </div>
 
 <script>
@@ -525,8 +457,9 @@ const ERAS_DATA = [
             type: "cupecita",
             shifterType: "H3",
             shifterLabel: "CAJA H-3M (1948)",
-            maxSpeed: 235,
-            accel: 95,
+            maxSpeed: 180,
+            accel: 125,
+            pace: 20.3,
             handling: 2.1,
             grip: 0.86,
             gears: 3,
@@ -619,8 +552,9 @@ const ERAS_DATA = [
             type: "compacto70",
             shifterType: "H4",
             shifterLabel: "HURST H-4M (70s)",
-            maxSpeed: 265,
-            accel: 115,
+            maxSpeed: 205,
+            accel: 140,
+            pace: 20.1,
             handling: 2.35,
             grip: 0.91,
             gears: 4,
@@ -713,8 +647,9 @@ const ERAS_DATA = [
             type: "tc90",
             shifterType: "H5",
             shifterLabel: "REJILLA H-5M (80/90)",
-            maxSpeed: 290,
+            maxSpeed: 225,
             accel: 135,
+            pace: 17.4,
             handling: 2.6,
             grip: 0.94,
             gears: 5,
@@ -807,8 +742,9 @@ const ERAS_DATA = [
             type: "tc2000s",
             shifterType: "SEQ6",
             shifterLabel: "SECUENCIAL 6M (2000s)",
-            maxSpeed: 305,
+            maxSpeed: 240,
             accel: 150,
+            pace: 17.2,
             handling: 2.85,
             grip: 0.97,
             gears: 6,
@@ -901,8 +837,9 @@ const ERAS_DATA = [
             type: "modern",
             shifterType: "PADDLE6",
             shifterLabel: "LEVAS / SEC 6M (2026)",
-            maxSpeed: 330,
+            maxSpeed: 250,
             accel: 175,
+            pace: 17.8,
             handling: 3.1,
             grip: 1.0,
             gears: 6,
@@ -1412,9 +1349,7 @@ function startRace(eraIdx, circuitIdx) {
     STATE.screenShake = 0;
     STATE.particles = [];
 
-    // Actualizar HUD inferior y controles en pantalla
-    document.getElementById('hudSpiritTag').textContent = era.spirit.shortName;
-    document.getElementById('hudLap').textContent = `VUELTA 1/${circuit.laps}`;
+    // Mensaje superior de la carrera
     document.getElementById('statusMessage').textContent = `${era.shortName} • ${circuit.name.toUpperCase()}`;
 
     hideAllScreens();
@@ -2023,7 +1958,7 @@ function updatePhysics(dt) {
         }
     }
 
-    const nitroMult = STATE.isNitroActive ? 1.24 : 1.0;
+    const nitroMult = STATE.isNitroActive ? 1.06 : 1.0;
     const torqueMult = STATE.torqueBoostTimer > 0 ? 1.18 : 1.0;
 
     // Física diferenciada entre Transmisión Automática y Transmisión Manual
@@ -2111,8 +2046,8 @@ function updatePhysics(dt) {
     STATE.playerX -= (currentSeg.curve * 0.42 * speedRatio * speedRatio * rainSlip) * dt;
     STATE.playerX = Math.max(-2.1, Math.min(2.1, STATE.playerX));
 
-    // Avance longitudinal
-    STATE.positionZ += STATE.speed * 13.5 * dt;
+    // Avance longitudinal (el factor "pace" ajusta el ritmo visual de cada época)
+    STATE.positionZ += STATE.speed * car.pace * dt;
 
     // Comprobar paso por línea de meta / vueltas
     if (STATE.positionZ >= STATE.trackLength) {
@@ -2123,7 +2058,6 @@ function updatePhysics(dt) {
             return;
         } else {
             audio.playBeep(660, 0.2);
-            document.getElementById('hudLap').textContent = `VUELTA ${STATE.lap}/${circuit.laps}`;
             document.getElementById('statusMessage').textContent =
                 STATE.lap === circuit.laps ? "¡ÚLTIMA VUELTA! ¡A FONDO!" : `VUELTA ${STATE.lap} DE ${circuit.laps}`;
         }
@@ -2134,10 +2068,10 @@ function updatePhysics(dt) {
     // Actualizar rivales IA y detectar rebufo / colisiones
     let rank = 1;
     STATE.rivals.forEach((rival) => {
-        const wave = Math.sin(STATE.raceTime * 1.5 + rival.id) * 12;
+        const wave = Math.sin(STATE.raceTime * 1.5 + rival.id) * 8;
         rival.speed = rival.baseSpeed + wave;
-        rival.z += rival.speed * 13.5 * dt;
-        rival.totalDist += rival.speed * 13.5 * dt;
+        rival.z += rival.speed * car.pace * dt;
+        rival.totalDist += rival.speed * car.pace * dt;
 
         if (rival.z >= STATE.trackLength) {
             rival.z -= STATE.trackLength;
@@ -2235,25 +2169,8 @@ function calculateGearAndRpm(speed, maxSpeed, totalGears) {
     return { gear: gearNum.toString(), rpm, rpmRatio };
 }
 
+// Con la barra inferior eliminada, solo queda la luz de cambio (Shift Lights) de la caja manual
 function updateHUD(gearInfo) {
-    const era = ERAS_DATA[STATE.currentEraIdx];
-    document.getElementById('hudSpeed').textContent = Math.floor(STATE.speed).toString().padStart(3, '0');
-    document.getElementById('hudGear').textContent = STATE.transmission === 'MANUAL' ? `M${gearInfo.gear}` : gearInfo.gear;
-    document.getElementById('hudRpmText').textContent = gearInfo.rpm;
-    document.getElementById('hudPos').textContent = `${STATE.playerRank}/12`;
-
-    // Barras LED de RPM
-    const leds = document.getElementById('rpmBarContainer').children;
-    const activeLeds = Math.round(gearInfo.rpmRatio * leds.length);
-    for (let i = 0; i < leds.length; i++) {
-        if (i < activeLeds) {
-            leds[i].style.backgroundColor = i < 7 ? '#22c55e' : (i < 10 ? '#eab308' : '#ef4444');
-        } else {
-            leds[i].style.backgroundColor = '#18181b';
-        }
-    }
-
-    // Shift Lights superiores para Caja Manual
     if (STATE.transmission === 'MANUAL') {
         const colors = ['#22c55e', '#22c55e', '#eab308', '#ef4444', '#38bdf8'];
         for (let s = 0; s < 5; s++) {
@@ -2266,31 +2183,6 @@ function updateHUD(gearInfo) {
                 el.style.backgroundColor = '#27272a';
             }
         }
-    }
-
-    // Salud / Integridad
-    const hp = Math.round(STATE.health);
-    document.getElementById('hudHealthText').textContent = `${hp}%`;
-    const hpBar = document.getElementById('hudHealthBar');
-    hpBar.style.width = `${hp}%`;
-    hpBar.className = `h-full transition-all duration-100 ${hp > 50 ? 'bg-emerald-500' : (hp > 25 ? 'bg-amber-500' : 'bg-red-600')}`;
-
-    // Nitro Espiritual
-    const nt = Math.round(STATE.nitro);
-    document.getElementById('hudNitroText').textContent = `${nt}%`;
-    const ntBar = document.getElementById('hudNitroBar');
-    ntBar.style.width = `${nt}%`;
-    ntBar.className = `h-full transition-all duration-100 ${STATE.isNitroActive ? 'bg-yellow-300' : 'bg-sky-400'}`;
-
-    // Retrato animado del piloto en HUD cada 6 frames
-    if (STATE.frameCounter % 6 === 0) {
-        let mood = 'normal';
-        if (STATE.crashFlash > 0.2) mood = 'hurt';
-        else if (STATE.isNitroActive || STATE.speed > era.car.maxSpeed * 0.92) mood = 'nitro';
-        else if (KEYS.left) mood = 'left';
-        else if (KEYS.right) mood = 'right';
-
-        drawSpiritPortrait(document.getElementById('hudPortraitCanvas'), era.spirit, mood, STATE.frameCounter);
     }
 }
 
@@ -3006,16 +2898,6 @@ function gameLoop(timestamp) {
 }
 
 window.onload = function () {
-    // Inicializar segmentos LED del tacómetro en el HUD
-    const rpmBar = document.getElementById('rpmBarContainer');
-    for (let i = 0; i < 12; i++) {
-        const led = document.createElement('div');
-        led.className = 'flex-1 h-full bg-zinc-900';
-        rpmBar.appendChild(led);
-    }
-
-    // Dibujar retrato inicial en el HUD
-    drawSpiritPortrait(document.getElementById('hudPortraitCanvas'), ERAS_DATA[0].spirit, 'normal', 0);
     updateSaveBadge();
     setupShifterInteraction();
 
