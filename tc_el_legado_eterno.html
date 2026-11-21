@@ -1,0 +1,3113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TC: el legado eterno - Edición 1993</title>
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#8b0000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #09090b;
+            color: #e4e4e7;
+            font-family: 'VT323', monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .font-doom {
+            font-family: 'Press Start 2P', monospace;
+        }
+
+        /* Textura metálica estilo barra de estado DOOM 1993 */
+        .doom-metal {
+            background-color: #4a4a4e;
+            background-image: 
+                radial-gradient(rgba(255,255,255,0.12) 1px, transparent 0),
+                radial-gradient(rgba(0,0,0,0.35) 1px, transparent 0),
+                linear-gradient(180deg, #626268 0%, #3d3d42 50%, #27272a 100%);
+            background-size: 6px 6px, 6px 6px, 100% 100%;
+            background-position: 0 0, 3px 3px, 0 0;
+            border-top: 3px solid #8e8e93;
+            border-left: 3px solid #71717a;
+            border-right: 3px solid #18181b;
+            border-bottom: 3px solid #09090b;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
+        }
+
+        .doom-inset {
+            background-color: #141416;
+            border-top: 3px solid #09090b;
+            border-left: 3px solid #09090b;
+            border-right: 3px solid #626268;
+            border-bottom: 3px solid #71717a;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.95);
+        }
+
+        .doom-btn {
+            background: linear-gradient(180deg, #7f1d1d 0%, #450a0a 100%);
+            border-top: 3px solid #ef4444;
+            border-left: 3px solid #dc2626;
+            border-right: 3px solid #1c0505;
+            border-bottom: 3px solid #000000;
+            color: #fef2f2;
+            text-shadow: 2px 2px 0px #000;
+            transition: transform 0.05s, filter 0.1s;
+            cursor: pointer;
+        }
+
+        .doom-btn:hover {
+            filter: brightness(1.2);
+        }
+
+        .doom-btn:active {
+            transform: translateY(2px);
+            border-top: 3px solid #1c0505;
+            border-left: 3px solid #1c0505;
+            border-right: 3px solid #ef4444;
+            border-bottom: 3px solid #dc2626;
+        }
+
+        .doom-btn-secondary {
+            background: linear-gradient(180deg, #52525b 0%, #27272a 100%);
+            border-top: 3px solid #a1a1aa;
+            border-left: 3px solid #71717a;
+            border-right: 3px solid #18181b;
+            border-bottom: 3px solid #000000;
+            color: #f4f4f5;
+            text-shadow: 2px 2px 0px #000;
+            cursor: pointer;
+        }
+
+        .doom-btn-secondary:hover {
+            filter: brightness(1.2);
+        }
+
+        /* Efecto CRT y pixelado estricto */
+        canvas {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .scanlines {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.22) 50%,
+                rgba(0,0,0,0.22)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+
+        .doom-text-shadow {
+            text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+        }
+
+        /* Estilos para Pedales Metálicos de Competición Táctiles */
+        .pedal-metal {
+            background: linear-gradient(180deg, #52525b 0%, #27272a 60%, #18181b 100%);
+            background-image: 
+                radial-gradient(#09090b 2px, transparent 0),
+                linear-gradient(180deg, #71717a 0%, #27272a 100%);
+            background-size: 8px 8px, 100% 100%;
+            border-top: 3px solid #a1a1aa;
+            border-left: 3px solid #71717a;
+            border-right: 3px solid #09090b;
+            border-bottom: 4px solid #000000;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.85), inset 0 1px 2px rgba(255,255,255,0.3);
+            transition: transform 0.05s ease, filter 0.05s ease;
+            touch-action: none;
+        }
+
+        .pedal-metal.pressed {
+            transform: translateY(4px) scale(0.96);
+            filter: brightness(0.85);
+            border-top: 2px solid #27272a;
+            border-bottom: 2px solid #000000;
+        }
+
+        .pedal-brake {
+            background-image: 
+                radial-gradient(#450a0a 2px, transparent 0),
+                linear-gradient(180deg, #991b1b 0%, #450a0a 100%);
+            border-top-color: #f87171;
+            border-left-color: #dc2626;
+        }
+
+        /* Scrollbar retro para selector de pistas */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #18181b;
+            border: 1px solid #3f3f46;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #991b1b;
+            border: 1px solid #ef4444;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CONTENEDOR PRINCIPAL DEL JUEGO -->
+    <div id="game-wrapper" class="relative w-full h-full max-w-6xl max-h-[860px] flex flex-col bg-black border-4 border-zinc-700 shadow-2xl overflow-hidden">
+        
+        <!-- VIEWPORT 3D RETRO (CANVAS PRINCIPAL) -->
+        <div class="relative flex-1 w-full overflow-hidden bg-zinc-900">
+            <canvas id="gameCanvas" class="w-full h-full block"></canvas>
+            
+            <!-- Capa Scanlines CRT opcional -->
+            <div id="crtOverlay" class="scanlines absolute inset-0 z-10"></div>
+
+            <!-- Indicador superior flotante estilo DOOM messages -->
+            <div id="doomTopLog" class="absolute top-2 left-2 right-2 sm:left-3 sm:right-3 z-20 flex justify-between items-start pointer-events-none gap-2">
+                <div class="flex flex-col gap-1">
+                    <div id="statusMessage" class="text-yellow-400 font-doom text-[9px] sm:text-xs doom-text-shadow tracking-wider uppercase">
+                        MOTOR LISTO - PRESIONA ACELERAR
+                    </div>
+                    <!-- Luces de Corte de RPM (Shift Lights) para Caja Manual -->
+                    <div id="shiftLightsBar" class="hidden flex items-center gap-1 bg-black/80 border border-zinc-700 px-2 py-0.5 w-fit">
+                        <span class="text-[9px] font-doom text-zinc-400 mr-1">SHIFT</span>
+                        <div class="w-2.5 h-2.5 rounded-full bg-zinc-800 border border-zinc-600" id="sl-0"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-zinc-800 border border-zinc-600" id="sl-1"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-zinc-800 border border-zinc-600" id="sl-2"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-zinc-800 border border-zinc-600" id="sl-3"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-zinc-800 border border-zinc-600" id="sl-4"></div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap justify-end gap-1.5 sm:gap-2 pointer-events-auto">
+                    <button id="btnCameraToggle" class="doom-btn-secondary px-2 py-1 text-[10px] sm:text-xs font-doom hidden" title="Cambiar Cámara (Tecla C)">📷 1RA</button>
+                    <button id="btnAudioToggle" class="doom-btn-secondary px-2 py-1 text-[10px] sm:text-xs font-doom" title="Activar/Silenciar Audio">🔊 SFX</button>
+                    <button id="btnPause" class="doom-btn-secondary px-2 py-1 text-[10px] sm:text-xs font-doom hidden">II PAUSA</button>
+                </div>
+            </div>
+
+            <!-- CAJA DE CAMBIOS HISTÓRICA TÁCTIL (Visible solo en Modo Manual durante carrera) -->
+            <div id="manualShifterPanel" class="hidden absolute right-2 sm:right-4 top-12 sm:top-14 z-20 doom-metal p-1.5 sm:p-2 flex flex-col items-center pointer-events-auto shadow-2xl">
+                <div id="shifterModelLabel" class="font-doom text-[8px] sm:text-[9px] text-amber-300 mb-1 tracking-tight text-center">CAJA 3M (H)</div>
+                <canvas id="shifterCanvas" width="92" height="106" class="w-20 h-24 sm:w-24 sm:h-28 doom-inset cursor-pointer touch-none"></canvas>
+                <div class="flex gap-1 mt-1 w-full">
+                    <button id="btnShiftDown" class="doom-btn-secondary flex-1 py-1 font-doom text-[10px] text-center" title="Bajar Marcha (Q)">-1</button>
+                    <button id="btnShiftUp" class="doom-btn flex-1 py-1 font-doom text-[10px] text-center" title="Subir Marcha (E)">+1</button>
+                </div>
+            </div>
+
+            <!-- CONTROLES TÁCTILES COMPLETOS PARA CELULAR (Multitouch: Dirección + Pedales + Nitro) -->
+            <div id="touchControls" class="hidden absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 z-20 flex justify-between items-end pointer-events-none">
+                <!-- Izquierda: Botones de Dirección -->
+                <div class="flex gap-2 pointer-events-auto">
+                    <button id="touchLeft" class="doom-btn-secondary w-14 h-14 sm:w-16 sm:h-16 rounded flex items-center justify-center text-2xl font-bold opacity-85 active:opacity-100 touch-none">◀</button>
+                    <button id="touchRight" class="doom-btn-secondary w-14 h-14 sm:w-16 sm:h-16 rounded flex items-center justify-center text-2xl font-bold opacity-85 active:opacity-100 touch-none">▶</button>
+                </div>
+
+                <!-- Derecha: Botón Nitro + Pedales Metálicos de Freno y Acelerador -->
+                <div class="flex flex-col items-end gap-1.5 pointer-events-auto">
+                    <button id="touchNitro" class="doom-btn px-3 py-1.5 rounded flex items-center justify-center text-[10px] sm:text-xs font-doom opacity-90 active:opacity-100 touch-none shadow-lg">
+                        🔥 ESPÍRITU NITRO
+                    </button>
+                    <div class="flex items-end gap-2">
+                        <!-- Pedal de Freno (más ancho y bajo) -->
+                        <button id="touchBrake" class="pedal-metal pedal-brake w-16 h-12 sm:w-20 sm:h-14 rounded-t flex flex-col items-center justify-center opacity-90">
+                            <span class="font-doom text-[8px] sm:text-[9px] text-red-200 doom-text-shadow">FRENO</span>
+                            <div class="w-8 h-1 bg-red-400/50 mt-1"></div>
+                        </button>
+                        <!-- Pedal de Acelerador (largo vertical estilo competición) -->
+                        <button id="touchGas" class="pedal-metal w-14 h-20 sm:w-16 sm:h-24 rounded-t flex flex-col items-center justify-center opacity-90">
+                            <span class="font-doom text-[8px] sm:text-[9px] text-emerald-300 doom-text-shadow">ACEL</span>
+                            <div class="w-6 h-1 bg-zinc-400/50 mt-1.5"></div>
+                            <div class="w-6 h-1 bg-zinc-400/50 mt-1"></div>
+                            <div class="w-6 h-1 bg-zinc-400/50 mt-1"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANTALLA 1: MENÚ PRINCIPAL -->
+            <div id="menuScreen" class="absolute inset-0 z-30 flex flex-col items-center justify-between p-3 sm:p-6 bg-gradient-to-b from-red-950/90 via-zinc-950/95 to-black overflow-y-auto">
+                <div class="text-center mt-1">
+                    <div class="inline-block px-3 py-0.5 bg-red-900/80 border border-red-500 text-yellow-300 text-[10px] sm:text-xs font-doom mb-1.5 tracking-widest">
+                        ID-TC93 ENGINE // AUTOMOVILISMO ARGENTINO
+                    </div>
+                    <h1 class="font-doom text-xl sm:text-3xl md:text-5xl text-red-600 doom-text-shadow tracking-tight leading-tight">
+                        TC: EL LEGADO ETERNO<br><span class="text-amber-400">EDICIÓN 1993</span>
+                    </h1>
+                    <p class="text-zinc-300 text-base sm:text-lg mt-1 max-w-2xl mx-auto">
+                        1940 – 2026 • 5 ERAS • 25 CIRCUITOS • 3 CÁMARAS • CAJA MANUAL/AUTO
+                    </p>
+                </div>
+
+                <!-- Sinopsis corta estilo manual de 1993 -->
+                <div class="doom-inset p-2.5 sm:p-3 max-w-2xl w-full text-center my-1.5">
+                    <p class="text-amber-200 text-sm sm:text-base leading-snug">
+                        En un taller de <span class="text-yellow-400 font-bold">Balcarce</span>, encuentras un casco de 1948. Al ponértelo, los espíritus de <span class="text-sky-400">Fangio</span>, <span class="text-red-400">Lauda</span>, <span class="text-yellow-300">Senna</span>, <span class="text-blue-300">Prost</span> y <span class="text-rose-500">Schumacher</span> guiarán tus manos desde las cupecitas hasta los bólidos modernos.
+                    </p>
+                </div>
+
+                <!-- SELECTOR DE TRANSMISIÓN Y CÁMARA INICIAL -->
+                <div class="doom-metal p-2.5 sm:p-3 max-w-2xl w-full grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-1">
+                    <!-- Selector de Transmisión -->
+                    <div class="doom-inset p-2 flex flex-col justify-between">
+                        <div class="text-[10px] font-doom text-zinc-400 mb-1.5 text-center">TRANSMISIÓN DEL AUTO</div>
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button id="btnTransAuto" class="doom-btn py-1.5 px-2 font-doom text-[10px]">AUTOMÁTICA</button>
+                            <button id="btnTransManual" class="doom-btn-secondary py-1.5 px-2 font-doom text-[10px]">MANUAL (H/SEC)</button>
+                        </div>
+                    </div>
+                    <!-- Selector de Cámara -->
+                    <div class="doom-inset p-2 flex flex-col justify-between">
+                        <div class="text-[10px] font-doom text-zinc-400 mb-1.5 text-center">VISTA DE CÁMARA</div>
+                        <div class="grid grid-cols-3 gap-1">
+                            <button id="btnCam1st" class="doom-btn py-1.5 px-1 font-doom text-[9px]">1RA CABINA</button>
+                            <button id="btnCam3rd" class="doom-btn-secondary py-1.5 px-1 font-doom text-[9px]">3RA AUTO</button>
+                            <button id="btnCamTop" class="doom-btn-secondary py-1.5 px-1 font-doom text-[9px]">ARRIBA</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones principales -->
+                <div class="flex flex-col sm:flex-row gap-2.5 sm:gap-4 w-full max-w-xl justify-center my-1">
+                    <button id="btnStartStory" class="doom-btn py-2.5 px-5 font-doom text-xs sm:text-sm flex-1">
+                        ▶ MODO HISTORIA<br><span class="text-[10px] text-amber-300 font-sans">(CARRERA PROGRESIVA)</span>
+                    </button>
+                    <button id="btnOpenSelector" class="doom-btn-secondary py-2.5 px-5 font-doom text-xs sm:text-sm flex-1">
+                        🏁 SELECTOR DE ERA / PISTA<br><span class="text-[10px] text-zinc-300 font-sans">(25 CIRCUITOS LIBRES)</span>
+                    </button>
+                </div>
+
+                <!-- Controles y progreso guardado -->
+                <div class="w-full max-w-2xl flex flex-wrap justify-between items-center text-[11px] sm:text-xs text-zinc-400 border-t border-zinc-800 pt-1.5 gap-2">
+                    <div>TECLADO: <span class="text-white">[WASD/Flechas]</span> • <span class="text-amber-300">[Q/E o 1-6]</span> Cambios • <span class="text-sky-300">[C]</span> Cámara • <span class="text-yellow-400">[ESPACIO]</span> Nitro</div>
+                    <div id="saveProgressBadge" class="text-emerald-400 font-bold">PROGRESO: ERA 1 - CARRERA 1/25</div>
+                </div>
+            </div>
+
+            <!-- PANTALLA 2: SELECTOR DE ERA Y CIRCUITO (25 PISTAS) -->
+            <div id="selectorScreen" class="hidden absolute inset-0 z-30 flex flex-col p-4 sm:p-6 bg-zinc-950/95">
+                <div class="flex justify-between items-center border-b-2 border-red-800 pb-3 mb-3">
+                    <div>
+                        <h2 class="font-doom text-base sm:text-xl text-amber-400">ARCHIVO HISTÓRICO DEL TC Y TC2000</h2>
+                        <p class="text-zinc-400 text-sm sm:text-base">Selecciona cualquier época, espíritu guía y circuito para competir</p>
+                    </div>
+                    <button id="btnBackFromSelector" class="doom-btn-secondary px-3 py-2 font-doom text-xs">◄ VOLVER</button>
+                </div>
+
+                <!-- Pestañas de Eras -->
+                <div id="eraTabs" class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-3"></div>
+
+                <!-- Detalle de la Era seleccionada y lista de 5 circuitos -->
+                <div id="eraDetailContainer" class="flex-1 overflow-y-auto doom-inset p-3 sm:p-4 flex flex-col gap-3"></div>
+            </div>
+
+            <!-- PANTALLA 3: NOVELA VISUAL / BRIEFING ANTES DE CADA CARRERA -->
+            <div id="storyScreen" class="hidden absolute inset-0 z-30 flex flex-col justify-between p-4 sm:p-6 bg-black/95">
+                <div class="flex justify-between items-center border-b-2 border-zinc-700 pb-2">
+                    <span id="storyEraTag" class="font-doom text-xs sm:text-sm text-red-500">ERA 1 // AÑOS 40-50</span>
+                    <span id="storyRaceNum" class="font-doom text-xs sm:text-sm text-amber-400">CARRERA 1 DE 5</span>
+                </div>
+
+                <!-- Caja principal estilo diálogo DOOM / Novela Visual -->
+                <div class="my-auto flex flex-col md:flex-row gap-4 items-center doom-metal p-4 sm:p-5 max-w-4xl mx-auto w-full">
+                    <!-- Retrato ampliado del Espíritu Legendario -->
+                    <div class="flex flex-col items-center shrink-0">
+                        <div class="doom-inset p-2 bg-zinc-900">
+                            <canvas id="storyPortraitCanvas" width="128" height="128" class="w-28 h-28 sm:w-36 sm:h-36"></canvas>
+                        </div>
+                        <span id="storySpiritName" class="font-doom text-[10px] sm:text-xs text-yellow-300 mt-2 text-center">JUAN MANUEL FANGIO</span>
+                        <span id="storySpiritTitle" class="text-xs text-zinc-300 text-center">El Chueco de Balcarce</span>
+                    </div>
+
+                    <!-- Texto narrativo y datos técnicos del circuito -->
+                    <div class="flex-1 flex flex-col justify-between gap-3">
+                        <div class="doom-inset p-3 sm:p-4">
+                            <h3 id="storyCircuitTitle" class="font-doom text-sm sm:text-lg text-amber-400 mb-2">1. CIRCUITO DE TANDIL</h3>
+                            <p id="storyNarrativeText" class="text-zinc-100 text-lg sm:text-xl leading-snug mb-3">
+                                Narrativa histórica...
+                            </p>
+                            <div class="border-l-4 border-yellow-500 pl-3 py-1 bg-yellow-950/30">
+                                <p id="storySpiritQuote" class="text-yellow-300 italic text-base sm:text-lg">
+                                    "Frase del piloto..."
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Especificaciones de pista y máquina -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                            <div class="doom-inset p-2">
+                                <div class="text-xs text-zinc-400">MÁQUINA</div>
+                                <div id="specCar" class="text-sm sm:text-base text-white font-bold truncate">Cupecita V8</div>
+                            </div>
+                            <div class="doom-inset p-2">
+                                <div class="text-xs text-zinc-400">SUPERFICIE</div>
+                                <div id="specSurface" class="text-sm sm:text-base text-amber-300 font-bold">Tierra / Asfalto</div>
+                            </div>
+                            <div class="doom-inset p-2">
+                                <div class="text-xs text-zinc-400">CLIMA</div>
+                                <div id="specWeather" class="text-sm sm:text-base text-sky-300 font-bold">Sol Radiante</div>
+                            </div>
+                            <div class="doom-inset p-2">
+                                <div class="text-xs text-zinc-400">OBJETIVO</div>
+                                <div class="text-sm sm:text-base text-emerald-400 font-bold">PODIO (TOP 3)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center max-w-4xl mx-auto w-full gap-3">
+                    <button id="btnStoryBack" class="doom-btn-secondary px-4 py-3 font-doom text-xs">◄ MENÚ</button>
+                    <button id="btnLaunchRace" class="doom-btn px-6 py-3 font-doom text-xs sm:text-sm flex-1 sm:flex-initial">
+                        🔥 ENCENDER MOTORES Y CORRER ►
+                    </button>
+                </div>
+            </div>
+
+            <!-- PANTALLA 4: RESULTADOS DE CARRERA / FIN DE ERA / FINAL ÉPICO -->
+            <div id="resultScreen" class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center p-4 sm:p-6 bg-black/90">
+                <div class="doom-metal p-5 sm:p-6 max-w-xl w-full text-center flex flex-col gap-4">
+                    <h2 id="resultHeader" class="font-doom text-xl sm:text-2xl text-amber-400 doom-text-shadow">¡BANDERA A CUADROS!</h2>
+                    
+                    <div class="doom-inset p-4 flex flex-col gap-2">
+                        <div class="text-zinc-400 text-sm">POSICIÓN FINAL</div>
+                        <div id="resultPosition" class="font-doom text-3xl sm:text-4xl text-yellow-400">1° PUESTO</div>
+                        <div id="resultTime" class="text-lg text-zinc-300">TIEMPO: 01:42.50</div>
+                        <p id="resultMessage" class="text-base sm:text-lg text-emerald-300 mt-2">
+                            ¡Excelente conducción! El espíritu guía asiente con orgullo.
+                        </p>
+                    </div>
+
+                    <div id="resultButtons" class="flex flex-col sm:flex-row gap-3 justify-center">
+                        <button id="btnRetryRace" class="doom-btn-secondary px-4 py-3 font-doom text-xs flex-1">↻ REINTENTAR</button>
+                        <button id="btnNextRace" class="doom-btn px-4 py-3 font-doom text-xs flex-1">SIGUIENTE CARRERA ►</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANTALLA 5: PAUSA -->
+            <div id="pauseScreen" class="hidden absolute inset-0 z-30 flex flex-col items-center justify-center p-4 bg-black/80">
+                <div class="doom-metal p-5 max-w-sm w-full text-center flex flex-col gap-3">
+                    <h2 class="font-doom text-xl text-red-500 doom-text-shadow">JUEGO EN PAUSA</h2>
+                    <p class="text-zinc-300 text-base">Boxes detenidos. Ajusta tu configuración:</p>
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="btnPauseTrans" class="doom-btn-secondary py-2 px-2 font-doom text-[10px]">CAJA: AUTO</button>
+                        <button id="btnPauseCam" class="doom-btn-secondary py-2 px-2 font-doom text-[10px]">CAM: 1RA</button>
+                    </div>
+
+                    <button id="btnResume" class="doom-btn py-3 font-doom text-xs">▶ CONTINUAR CARRERA</button>
+                    <button id="btnRestartPause" class="doom-btn-secondary py-2.5 font-doom text-xs">↻ REINICIAR PISTA</button>
+                    <button id="btnQuitToMenu" class="doom-btn-secondary py-2.5 font-doom text-xs">■ SALIR AL MENÚ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- BARRA DE ESTADO INFERIOR CLÁSICA ESTILO DOOM 1993 -->
+        <div id="doomHud" class="doom-metal h-24 sm:h-28 w-full px-2 py-1.5 sm:px-4 sm:py-2 grid grid-cols-12 gap-1.5 sm:gap-3 items-center shrink-0 z-20">
+            
+            <!-- BLOQUE 1: VELOCIDAD, MARCHA Y RPM (4 cols) -->
+            <div class="col-span-4 doom-inset h-full p-1.5 sm:p-2 flex flex-col justify-between">
+                <div class="flex justify-between items-baseline">
+                    <div>
+                        <span id="hudSpeed" class="font-doom text-base sm:text-2xl text-red-500 doom-text-shadow">000</span>
+                        <span class="text-[10px] sm:text-xs text-zinc-400">KM/H</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[10px] sm:text-xs text-zinc-400">MARCHA</span>
+                        <span id="hudGear" class="font-doom text-sm sm:text-xl text-amber-400 ml-1">N</span>
+                    </div>
+                </div>
+                <!-- Barra LED de RPM -->
+                <div class="w-full">
+                    <div class="flex justify-between text-[9px] sm:text-[11px] text-zinc-400 mb-0.5">
+                        <span>RPM</span>
+                        <span id="hudRpmText">1000</span>
+                    </div>
+                    <div id="rpmBarContainer" class="w-full h-2.5 sm:h-3 bg-zinc-950 border border-zinc-700 flex gap-0.5 p-0.5">
+                        <!-- 12 segmentos LED generados por JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOQUE 2: POSICIÓN Y VUELTA (2 cols) -->
+            <div class="col-span-2 doom-inset h-full p-1 sm:p-2 flex flex-col items-center justify-center text-center">
+                <div class="text-[9px] sm:text-xs text-zinc-400">POSICIÓN</div>
+                <div id="hudPos" class="font-doom text-sm sm:text-xl text-yellow-400 my-0.5">12/12</div>
+                <div id="hudLap" class="text-[10px] sm:text-xs text-emerald-400 font-bold">VUELTA 1/3</div>
+            </div>
+
+            <!-- BLOQUE 3: RETRATO ANIMADO PIXEL-ART DEL ESPÍRITU GUÍA (2 cols) -->
+            <div class="col-span-2 h-full flex flex-col items-center justify-center">
+                <div class="doom-inset p-0.5 sm:p-1 bg-zinc-950 relative">
+                    <canvas id="hudPortraitCanvas" width="64" height="64" class="w-12 h-12 sm:w-16 sm:h-16 block"></canvas>
+                </div>
+                <div id="hudSpiritTag" class="font-doom text-[8px] sm:text-[9px] text-amber-300 mt-0.5 truncate max-w-full">FANGIO</div>
+            </div>
+
+            <!-- BLOQUE 4: INTEGRIDAD CHASIS Y ESPÍRITU / NITRO (4 cols) -->
+            <div class="col-span-4 doom-inset h-full p-1.5 sm:p-2 flex flex-col justify-between">
+                <!-- Integridad / Salud del Auto -->
+                <div>
+                    <div class="flex justify-between text-[9px] sm:text-xs">
+                        <span class="text-zinc-300">CHASIS/MOTOR</span>
+                        <span id="hudHealthText" class="text-emerald-400 font-bold">100%</span>
+                    </div>
+                    <div class="w-full h-2.5 sm:h-3 bg-zinc-950 border border-zinc-700 p-0.5">
+                        <div id="hudHealthBar" class="h-full bg-emerald-500 transition-all duration-100" style="width: 100%"></div>
+                    </div>
+                </div>
+
+                <!-- Barra de Espíritu / Nitro -->
+                <div>
+                    <div class="flex justify-between text-[9px] sm:text-xs">
+                        <span class="text-sky-300">ESPÍRITU NITRO</span>
+                        <span id="hudNitroText" class="text-sky-400 font-bold">50%</span>
+                    </div>
+                    <div class="w-full h-2.5 sm:h-3 bg-zinc-950 border border-zinc-700 p-0.5">
+                        <div id="hudNitroBar" class="h-full bg-sky-400 transition-all duration-100" style="width: 50%"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<script>
+/**
+ * ============================================================================
+ * TC DOOM: LEGADO ETERNO (1993 PSEUDO-3D RETRO ENGINE)
+ * ============================================================================
+ * Motor completo de carreras 2.5D estilo DOOM / OutRun / Lotus Turbo Challenge
+ * con cabinas históricas dinámicas, síntesis de sonido Web Audio API y 25 pistas.
+ */
+
+// ============================================================================
+// 1. BASE DE DATOS HISTÓRICA: 5 ERAS, 5 ESPÍRITUS Y 25 CIRCUITOS ARGENTINOS
+// ============================================================================
+const ERAS_DATA = [
+    {
+        id: 0,
+        code: "ERA 1 // 1940-1959",
+        title: "LA EPOPEYA DE LAS CUPECITAS",
+        shortName: "AÑOS 40/50",
+        spirit: {
+            name: "JUAN MANUEL FANGIO",
+            shortName: "FANGIO",
+            title: "El Chueco de Balcarce (Quíntuple Campeón)",
+            skin: "#e0ac69",
+            hair: "#3b2f2f",
+            helmetColor: "#8b4513", // Casco cuero marrón clásico
+            goggles: true,
+            visorColor: "#bae6fd",
+            accentColor: "#38bdf8",
+            quote: "“Para llegar primero, primero hay que llegar. Siente la tierra en el volante, muchacho; el auto te habla antes de patinar.”"
+        },
+        car: {
+            name: "Cupecita Ford / Chevy V8",
+            type: "cupecita",
+            shifterType: "H3",
+            shifterLabel: "CAJA H-3M (1948)",
+            maxSpeed: 235,
+            accel: 95,
+            handling: 2.1,
+            grip: 0.86,
+            gears: 3,
+            dashColor: "#78350f",
+            wheelColor: "#92400e",
+            hoodColor: "#b91c1c"
+        },
+        circuits: [
+            {
+                name: "Circuito de Tandil (Semipermanente)",
+                surface: "Tierra y Asfalto",
+                weather: "Sol de Sierra",
+                skyTop: "#1d4ed8", skyBottom: "#93c5fd",
+                grassLight: "#4d7c0f", grassDark: "#3f6212",
+                roadLight: "#78716c", roadDark: "#57534e",
+                rumbleLight: "#dc2626", rumbleDark: "#f8fafc",
+                fog: false, rain: false, night: false,
+                laps: 2, length: 240, curvature: 1.1, hilliness: 1.2,
+                narrative: "Sierras de Tandil, 1948. El polvo en suspensión apenas deja ver las curvas. El espíritu de Juan Manuel Fangio toma el volante de madera de tu cupecita."
+            },
+            {
+                name: "Vuelta de Balcarce - Lobería",
+                surface: "Ruta Abierta",
+                weather: "Viento Pampeano",
+                skyTop: "#0369a1", skyBottom: "#bae6fd",
+                grassLight: "#65a30d", grassDark: "#4d7c0f",
+                roadLight: "#6b7280", roadDark: "#4b5563",
+                rumbleLight: "#eab308", rumbleDark: "#1e293b",
+                fog: false, rain: false, night: false,
+                laps: 2, length: 260, curvature: 0.9, hilliness: 0.8,
+                narrative: "La tierra natal del Maestro. Largas rectas rurales donde los motores V8 preparados en talleres de pueblo rugen sin descanso."
+            },
+            {
+                name: "Gran Premio del Norte",
+                surface: "Cornisa y Ripio",
+                weather: "Atardecer Andino",
+                skyTop: "#7c2d12", skyBottom: "#fdba74",
+                grassLight: "#a16207", grassDark: "#854d0e",
+                roadLight: "#92400e", roadDark: "#78350f",
+                rumbleLight: "#f97316", rumbleDark: "#fef3c7",
+                fog: false, rain: false, night: false,
+                laps: 2, length: 280, curvature: 1.4, hilliness: 1.6,
+                narrative: "Caminos de montaña hacia el norte argentino. Precipicios a un costado y curvas ciegas que exigen temple de acero."
+            },
+            {
+                name: "Circuito de Rafaela (Óvalo Primitivo)",
+                surface: "Tierra Compactada",
+                weather: "Sol Intenso",
+                skyTop: "#2563eb", skyBottom: "#dbeafe",
+                grassLight: "#15803d", grassDark: "#166534",
+                roadLight: "#a8a29e", roadDark: "#78716c",
+                rumbleLight: "#dc2626", rumbleDark: "#ffffff",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 220, curvature: 0.75, hilliness: 0.2,
+                narrative: "El templo de la velocidad santafesina en sus albores. Curvones amplios donde el pie derecho no se levanta jamás."
+            },
+            {
+                name: "Autódromo 17 de Octubre (Bs. As. 1952)",
+                surface: "Asfalto Inaugural",
+                weather: "Tarde Histórica",
+                skyTop: "#1e3a8a", skyBottom: "#60a5fa",
+                grassLight: "#16a34a", grassDark: "#15803d",
+                roadLight: "#52525b", roadDark: "#3f3f46",
+                rumbleLight: "#dc2626", rumbleDark: "#f4f4f5",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 270, curvature: 1.2, hilliness: 0.4,
+                narrative: "1952: Se inaugura el coliseo porteño. Cientos de miles de espectadores colman las tribunas para verte cerrar la era dorada."
+            }
+        ]
+    },
+    {
+        id: 1,
+        code: "ERA 2 // AÑOS 70",
+        title: "LA REVOLUCIÓN DE LOS COMPACTOS",
+        shortName: "AÑOS 70",
+        spirit: {
+            name: "NIKI LAUDA",
+            shortName: "LAUDA",
+            title: "La Computadora (Tricampeón Inmortal)",
+            skin: "#f1c27d",
+            hair: "#7f1d1d",
+            helmetColor: "#dc2626", // Casco rojo clásico Lauda
+            goggles: false,
+            visorColor: "#1e293b",
+            accentColor: "#ef4444",
+            quote: "“Un auto de carreras no se domina con furia, sino con precisión quirúrgica. Respeta la temperatura del motor y ataca en el vértice exacto.”"
+        },
+        car: {
+            name: "Torino 380W / Falcon / Chevy",
+            type: "compacto70",
+            shifterType: "H4",
+            shifterLabel: "HURST H-4M (70s)",
+            maxSpeed: 265,
+            accel: 115,
+            handling: 2.35,
+            grip: 0.91,
+            gears: 4,
+            dashColor: "#1f2937",
+            wheelColor: "#111827",
+            hoodColor: "#d97706"
+        },
+        circuits: [
+            {
+                name: "Vuelta de Olavarría",
+                surface: "Asfalto Rutero",
+                weather: "Mañana Fresca",
+                skyTop: "#0284c7", skyBottom: "#e0f2fe",
+                grassLight: "#4d7c0f", grassDark: "#365314",
+                roadLight: "#4b5563", roadDark: "#374151",
+                rumbleLight: "#dc2626", rumbleDark: "#ffffff",
+                fog: false, rain: false, night: false,
+                laps: 2, length: 270, curvature: 1.1, hilliness: 0.5,
+                narrative: "Los compactos de 6 cilindros reemplazan a las cupecitas. Niki Lauda se manifiesta en tu tablero: frialdad absoluta a más de 240 km/h."
+            },
+            {
+                name: "Autódromo Oscar Cabalén (Córdoba)",
+                surface: "Asfalto de Montaña",
+                weather: "Sol Serrano",
+                skyTop: "#1d4ed8", skyBottom: "#93c5fd",
+                grassLight: "#65a30d", grassDark: "#3f6212",
+                roadLight: "#52525b", roadDark: "#3f3f46",
+                rumbleLight: "#ef4444", rumbleDark: "#f8fafc",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 260, curvature: 1.35, hilliness: 1.3,
+                narrative: "Subidas y bajadas en Alta Gracia. La puesta a punto de la suspensión y el balance de frenado marcan la diferencia."
+            },
+            {
+                name: "Circuito El Zonda (San Juan)",
+                surface: "Asfalto entre Cerros",
+                weather: "Calor Seco",
+                skyTop: "#1e40af", skyBottom: "#93c5fd",
+                grassLight: "#a16207", grassDark: "#713f12",
+                roadLight: "#44403c", roadDark: "#292524",
+                rumbleLight: "#dc2626", rumbleDark: "#fef08a",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 250, curvature: 1.5, hilliness: 1.4,
+                narrative: "La Quebrada Rugiente. Los paredones de piedra devuelven el bramido de los escapes libres mientras negocias la horquilla."
+            },
+            {
+                name: "Vuelta de Pergamino",
+                surface: "Ruta Rápida",
+                weather: "Nublado",
+                skyTop: "#334155", skyBottom: "#94a3b8",
+                grassLight: "#15803d", grassDark: "#14532d",
+                roadLight: "#4b5563", roadDark: "#374151",
+                rumbleLight: "#dc2626", rumbleDark: "#ffffff",
+                fog: false, rain: false, night: false,
+                laps: 2, length: 290, curvature: 0.95, hilliness: 0.3,
+                narrative: "Rectas interminables bordeadas por el público a metros del asfalto. El rebufo es tu mejor aliado."
+            },
+            {
+                name: "Autódromo Gral. San Martín (Mendoza)",
+                surface: "Asfalto Técnico",
+                weather: "Atardecer Cuyano",
+                skyTop: "#581c87", skyBottom: "#fb923c",
+                grassLight: "#4d7c0f", grassDark: "#365314",
+                roadLight: "#3f3f46", roadDark: "#27272a",
+                rumbleLight: "#ef4444", rumbleDark: "#ffffff",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 280, curvature: 1.3, hilliness: 0.9,
+                narrative: "Bajo la cordillera mendocina, el Torino y el Falcon libran una batalla épica hasta la última curva."
+            }
+        ]
+    },
+    {
+        id: 2,
+        code: "ERA 3 // AÑOS 80-90",
+        title: "VELOCIDAD PURA Y LLUVIA",
+        shortName: "AÑOS 80/90",
+        spirit: {
+            name: "AYRTON SENNA",
+            shortName: "SENNA",
+            title: "O Rei (El Maestro de la Lluvia)",
+            skin: "#d69e66",
+            hair: "#1c1917",
+            helmetColor: "#facc15", // Casco amarillo con franjas verdes/azules
+            goggles: false,
+            visorColor: "#0f172a",
+            accentColor: "#facc15",
+            quote: "“Cuando llueve, todos tienen miedo de frenar tarde. Ahí es donde nosotros encontramos la línea invisible hacia la victoria.”"
+        },
+        car: {
+            name: "Falcon Angostado / Dodge GTX",
+            type: "tc90",
+            shifterType: "H5",
+            shifterLabel: "REJILLA H-5M (80/90)",
+            maxSpeed: 290,
+            accel: 135,
+            handling: 2.6,
+            grip: 0.94,
+            gears: 5,
+            dashColor: "#18181b",
+            wheelColor: "#09090b",
+            hoodColor: "#1d4ed8"
+        },
+        circuits: [
+            {
+                name: "Autódromo J.M. Fangio (Balcarce)",
+                surface: "Asfalto de Sierra",
+                weather: "Llovizna Intensa",
+                skyTop: "#1e293b", skyBottom: "#64748b",
+                grassLight: "#166534", grassDark: "#14532d",
+                roadLight: "#334155", roadDark: "#1e293b",
+                rumbleLight: "#ef4444", rumbleDark: "#f8fafc",
+                fog: false, rain: true, night: false,
+                laps: 3, length: 280, curvature: 1.4, hilliness: 1.5,
+                narrative: "La Sierra La Barrosa bajo la lluvia. El casco amarillo de Ayrton Senna brilla en tu reflejo: cada gota en el parabrisas es pura adrenalina."
+            },
+            {
+                name: "Autódromo Roberto Mouras (La Plata)",
+                surface: "Asfalto Veloz",
+                weather: "Tormenta Passageira",
+                skyTop: "#0f172a", skyBottom: "#475569",
+                grassLight: "#15803d", grassDark: "#166534",
+                roadLight: "#374151", roadDark: "#1f2937",
+                rumbleLight: "#dc2626", rumbleDark: "#ffffff",
+                fog: false, rain: true, night: false,
+                laps: 3, length: 290, curvature: 1.15, hilliness: 0.3,
+                narrative: "El curvón de La Plata exige valentía absoluta. Con pista húmeda, el control del acelerador en la salida es un arte."
+            },
+            {
+                name: "Autódromo Ciudad de Nueve de Julio",
+                surface: "Asfalto Plano",
+                weather: "Sol y Nubes",
+                skyTop: "#1d4ed8", skyBottom: "#93c5fd",
+                grassLight: "#22c55e", grassDark: "#16a34a",
+                roadLight: "#4b5563", roadDark: "#374151",
+                rumbleLight: "#dc2626", rumbleDark: "#ffffff",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 280, curvature: 1.2, hilliness: 0.2,
+                narrative: "Chicanas velozmente enlazadas en la llanura bonaerense. Senna te impulsa a atacar los pianitos sin piedad."
+            },
+            {
+                name: "Semipermanente de Santa Teresita",
+                surface: "Ruta Costera",
+                weather: "Brisa Marina y Lluvia",
+                skyTop: "#1e3a8a", skyBottom: "#64748b",
+                grassLight: "#4d7c0f", grassDark: "#3f6212",
+                roadLight: "#334155", roadDark: "#1e293b",
+                rumbleLight: "#facc15", rumbleDark: "#1e293b",
+                fog: false, rain: true, night: false,
+                laps: 2, length: 310, curvature: 1.0, hilliness: 0.2,
+                narrative: "Los últimos grandes desafíos en ruta abierta junto al mar. El spray de los autos adelante oculta la frenada."
+            },
+            {
+                name: "Autódromo Hnos. Emiliozzi (Olavarría)",
+                surface: "Asfalto Moderno 90s",
+                weather: "Atardecer Dorado",
+                skyTop: "#7c2d12", skyBottom: "#f59e0b",
+                grassLight: "#15803d", grassDark: "#14532d",
+                roadLight: "#3f3f46", roadDark: "#27272a",
+                rumbleLight: "#dc2626", rumbleDark: "#ffffff",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 300, curvature: 1.35, hilliness: 0.4,
+                narrative: "Homenaje a los Gringos de Olavarría. Un trazado técnico donde cerrar la década de los 90 en lo más alto."
+            }
+        ]
+    },
+    {
+        id: 3,
+        code: "ERA 4 // AÑOS 2000",
+        title: "AERODINÁMICA Y PRECISIÓN",
+        shortName: "AÑOS 2000",
+        spirit: {
+            name: "ALAIN PROST",
+            shortName: "PROST",
+            title: "El Profesor (Tetracampeón Estratégico)",
+            skin: "#eab676",
+            hair: "#451a03",
+            helmetColor: "#f8fafc", // Casco blanco con azul y rojo Francia
+            goggles: false,
+            visorColor: "#1e3a8a",
+            accentColor: "#60a5fa",
+            quote: "“Ganar al ritmo más lento posible es la verdadera maestría. Cuida el chasis, traza limpio y golpea cuando tus rivales se desgasten.”"
+        },
+        car: {
+            name: "Chevy / Falcon TC 2000s",
+            type: "tc2000s",
+            shifterType: "SEQ6",
+            shifterLabel: "SECUENCIAL 6M (2000s)",
+            maxSpeed: 305,
+            accel: 150,
+            handling: 2.85,
+            grip: 0.97,
+            gears: 6,
+            dashColor: "#0f172a",
+            wheelColor: "#1e293b",
+            hoodColor: "#dc2626"
+        },
+        circuits: [
+            {
+                name: "Autódromo de Paraná (Entre Ríos)",
+                surface: "Asfalto de Alta Carga",
+                weather: "Sol Entrerriano",
+                skyTop: "#1d4ed8", skyBottom: "#93c5fd",
+                grassLight: "#16a34a", grassDark: "#15803d",
+                roadLight: "#3f3f46", roadDark: "#27272a",
+                rumbleLight: "#dc2626", rumbleDark: "#ffffff",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 300, curvature: 1.35, hilliness: 0.9,
+                narrative: "Los alerones y pontones entran en escena. Alain Prost calcula cada milímetro de la trazada en las curvas peraltadas de Paraná."
+            },
+            {
+                name: "Autódromo Rosendo Hernández (San Luis)",
+                surface: "Asfalto Veloz",
+                weather: "Cielo Despejado",
+                skyTop: "#0369a1", skyBottom: "#bae6fd",
+                grassLight: "#65a30d", grassDark: "#4d7c0f",
+                roadLight: "#3f3f46", roadDark: "#27272a",
+                rumbleLight: "#2563eb", rumbleDark: "#ffffff",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 310, curvature: 1.25, hilliness: 1.0,
+                narrative: "Curvas rápidas en las sierras puntanas donde la carga aerodinámica pega el auto al piso."
+            },
+            {
+                name: "Autódromo Parque Ciudad de Río Cuarto",
+                surface: "Asfalto Rápido",
+                weather: "Viento Cruzado",
+                skyTop: "#2563eb", skyBottom: "#dbeafe",
+                grassLight: "#15803d", grassDark: "#166534",
+                roadLight: "#4b5563", roadDark: "#374151",
+                rumbleLight: "#dc2626", rumbleDark: "#ffffff",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 295, curvature: 1.15, hilliness: 0.3,
+                narrative: "El Imperio del Sur cordobés. Recta opuesta eterna y frenajes bruscos donde la estrategia de El Profesor brilla."
+            },
+            {
+                name: "Autódromo Mar y Valle (Trelew)",
+                surface: "Asfalto Patagónico",
+                weather: "Ráfagas del Sur",
+                skyTop: "#1e3a8a", skyBottom: "#93c5fd",
+                grassLight: "#a16207", grassDark: "#854d0e",
+                roadLight: "#3f3f46", roadDark: "#27272a",
+                rumbleLight: "#dc2626", rumbleDark: "#ffffff",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 310, curvature: 1.3, hilliness: 0.5,
+                narrative: "La estepa patagónica en Chubut. El viento lateral exige correcciones suaves y quirúrgicas."
+            },
+            {
+                name: "Autódromo Rosamonte (Posadas)",
+                surface: "Asfalto Misionero",
+                weather: "Calor Tropical",
+                skyTop: "#1d4ed8", skyBottom: "#60a5fa",
+                grassLight: "#991b1b", grassDark: "#7f1d1d", // Tierra colorada misionera!
+                roadLight: "#3f3f46", roadDark: "#27272a",
+                rumbleLight: "#facc15", rumbleDark: "#16a34a",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 320, curvature: 1.5, hilliness: 1.2,
+                narrative: "Rodeado de tierra colorada y selva misionera. Un trazado trabado y exigente para consagrar la era."
+            }
+        ]
+    },
+    {
+        id: 4,
+        code: "ERA 5 // ACTUALIDAD",
+        title: "TC NUEVA GENERACIÓN Y TC2000",
+        shortName: "ACTUALIDAD",
+        spirit: {
+            name: "MICHAEL SCHUMACHER",
+            shortName: "SCHUMI",
+            title: "El Káiser (Heptacampeón Legendario)",
+            skin: "#f1c27d",
+            hair: "#78350f",
+            helmetColor: "#dc2626", // Casco rojo Ferrari/Schumi con estrellas
+            goggles: false,
+            visorColor: "#09090b",
+            accentColor: "#f43f5e",
+            quote: "“Toda la historia vive en tus manos. Cada vuelta debe ser una vuelta de clasificación: perfección absoluta hasta cruzar la meta.”"
+        },
+        car: {
+            name: "Mustang / Camaro TC & TC2000",
+            type: "modern",
+            shifterType: "PADDLE6",
+            shifterLabel: "LEVAS / SEC 6M (2026)",
+            maxSpeed: 330,
+            accel: 175,
+            handling: 3.1,
+            grip: 1.0,
+            gears: 6,
+            dashColor: "#09090b",
+            wheelColor: "#18181b",
+            hoodColor: "#e11d48"
+        },
+        circuits: [
+            {
+                name: "Autódromo Oscar y Juan Gálvez (Circuito 12)",
+                surface: "Asfalto Catedral",
+                weather: "Sol Pleno",
+                skyTop: "#1e40af", skyBottom: "#93c5fd",
+                grassLight: "#16a34a", grassDark: "#15803d",
+                roadLight: "#27272a", roadDark: "#18181b",
+                rumbleLight: "#dc2626", rumbleDark: "#ffffff",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 340, curvature: 1.25, hilliness: 0.4,
+                narrative: "La Catedral del Automovilismo. El Curvón Salotto y la Chicana de Ascari a fondo con el espíritu de Michael Schumacher."
+            },
+            {
+                name: "Circuito Int. Termas de Río Hondo",
+                surface: "Asfalto Grado Internacional",
+                weather: "Atardecer Santiagueño",
+                skyTop: "#7c2d12", skyBottom: "#fb923c",
+                grassLight: "#65a30d", grassDark: "#4d7c0f",
+                roadLight: "#27272a", roadDark: "#18181b",
+                rumbleLight: "#ef4444", rumbleDark: "#ffffff",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 350, curvature: 1.4, hilliness: 0.6,
+                narrative: "Trazado mundialista de altísima velocidad. Los Mustang y Camaro de Nueva Generación alcanzan velocidades máximas históricas."
+            },
+            {
+                name: "Autódromo San Juan Villicum",
+                surface: "Asfalto Moderno",
+                weather: "Cielo Despejado",
+                skyTop: "#1d4ed8", skyBottom: "#93c5fd",
+                grassLight: "#b45309", grassDark: "#92400e",
+                roadLight: "#27272a", roadDark: "#18181b",
+                rumbleLight: "#dc2626", rumbleDark: "#facc15",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 345, curvature: 1.5, hilliness: 1.1,
+                narrative: "Al pie de la precordillera en Albardón. Curvas enlazadas de radio variable que exigen máxima concentración física."
+            },
+            {
+                name: "Autódromo Parque Provincia del Neuquén",
+                surface: "Asfalto Patagónico",
+                weather: "Sol de Centenario",
+                skyTop: "#0284c7", skyBottom: "#bae6fd",
+                grassLight: "#854d0e", grassDark: "#713f12",
+                roadLight: "#27272a", roadDark: "#18181b",
+                rumbleLight: "#dc2626", rumbleDark: "#ffffff",
+                fog: false, rain: false, night: false,
+                laps: 3, length: 335, curvature: 1.35, hilliness: 0.5,
+                narrative: "Centenario, Neuquén. La penúltima prueba antes de consagrar tu nombre junto a los inmortales."
+            },
+            {
+                name: "Callejero de Santa Fe (Nocturno TC2000)",
+                surface: "Asfalto Urbano Nocturno",
+                weather: "Noche Iluminada",
+                skyTop: "#020617", skyBottom: "#1e1b4b",
+                grassLight: "#1e293b", grassDark: "#0f172a",
+                roadLight: "#27272a", roadDark: "#18181b",
+                rumbleLight: "#facc15", rumbleDark: "#ef4444",
+                fog: false, rain: false, night: true,
+                laps: 3, length: 350, curvature: 1.65, hilliness: 0.2,
+                narrative: "¡LA GRAN FINAL! Noche en las calles de Santa Fe con el TC2000 Turbo. Muros de hormigón a centímetros y los 5 espíritus impulsando tu alma."
+            }
+        ]
+    }
+];
+
+// ============================================================================
+// 2. MOTOR DE AUDIO RETRO SINTETIZADO (WEB AUDIO API - SIN ARCHIVOS EXTERNOS)
+// ============================================================================
+class RetroAudioEngine {
+    constructor() {
+        this.ctx = null;
+        this.enabled = true;
+        this.engineOsc = null;
+        this.engineSubOsc = null;
+        this.engineGain = null;
+        this.isRunning = false;
+    }
+
+    init() {
+        if (!this.ctx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            this.ctx = new AudioCtx();
+        }
+        if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
+    }
+
+    startEngine() {
+        if (!this.enabled) return;
+        this.init();
+        if (this.isRunning) return;
+
+        this.engineOsc = this.ctx.createOscillator();
+        this.engineSubOsc = this.ctx.createOscillator();
+        this.engineGain = this.ctx.createGain();
+        const filter = this.ctx.createBiquadFilter();
+
+        this.engineOsc.type = 'sawtooth';
+        this.engineSubOsc.type = 'triangle';
+        filter.type = 'lowpass';
+        filter.frequency.value = 320;
+
+        this.engineOsc.frequency.value = 45;
+        this.engineSubOsc.frequency.value = 22.5;
+        this.engineGain.gain.value = 0.08;
+
+        this.engineOsc.connect(filter);
+        this.engineSubOsc.connect(filter);
+        filter.connect(this.engineGain);
+        this.engineGain.connect(this.ctx.destination);
+
+        this.engineOsc.start();
+        this.engineSubOsc.start();
+        this.isRunning = true;
+    }
+
+    updateEngine(rpmRatio, isNitro, isPaused) {
+        if (!this.isRunning || !this.ctx) return;
+        if (!this.enabled || isPaused) {
+            this.engineGain.gain.setTargetAtTime(0, this.ctx.currentTime, 0.05);
+            return;
+        }
+        const baseFreq = 38 + rpmRatio * 125 + (isNitro ? 45 : 0);
+        this.engineOsc.frequency.setTargetAtTime(baseFreq, this.ctx.currentTime, 0.04);
+        this.engineSubOsc.frequency.setTargetAtTime(baseFreq * 0.5, this.ctx.currentTime, 0.04);
+        this.engineGain.gain.setTargetAtTime(isNitro ? 0.13 : 0.08, this.ctx.currentTime, 0.05);
+    }
+
+    stopEngine() {
+        if (this.isRunning) {
+            try {
+                this.engineOsc.stop();
+                this.engineSubOsc.stop();
+            } catch (e) {}
+            this.isRunning = false;
+        }
+    }
+
+    playCrash() {
+        if (!this.enabled) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(110, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(24, this.ctx.currentTime + 0.25);
+
+        gain.gain.setValueAtTime(0.22, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.25);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.26);
+    }
+
+    playNitro() {
+        if (!this.enabled) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(180, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(620, this.ctx.currentTime + 0.35);
+
+        gain.gain.setValueAtTime(0.14, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.36);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.37);
+    }
+
+    playBeep(freq = 440, duration = 0.12) {
+        if (!this.enabled) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + duration + 0.01);
+    }
+
+    playVictory() {
+        if (!this.enabled) return;
+        this.init();
+        const notes = [330, 392, 494, 659, 587, 659];
+        notes.forEach((n, idx) => {
+            setTimeout(() => this.playBeep(n, 0.18), idx * 120);
+        });
+    }
+}
+
+const audio = new RetroAudioEngine();
+
+// ============================================================================
+// 3. GENERADOR DE RETRATOS PIXEL-ART ESTILO DOOMGUY (16x16 / 24x24 MATRIZ)
+// ============================================================================
+function drawSpiritPortrait(canvas, spirit, mood = 'normal', frame = 0) {
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    // Fondo estilo monitor DOOM con dithering
+    ctx.fillStyle = '#18181b';
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = spirit.accentColor + '22';
+    for (let y = 0; y < h; y += 4) {
+        ctx.fillRect(0, y, w, 2);
+    }
+
+    const px = w / 16; // Grilla pixel art de 16x16 escalada limpiamente
+    const drawPx = (x, y, pw, ph, color) => {
+        ctx.fillStyle = color;
+        ctx.fillRect(Math.floor(x * px), Math.floor(y * px), Math.ceil(pw * px), Math.ceil(ph * px));
+    };
+
+    // Sacudida si choca o va a máxima velocidad
+    const shakeX = mood === 'hurt' ? (frame % 2 === 0 ? -0.4 : 0.4) : (mood === 'nitro' ? (frame % 2 === 0 ? -0.2 : 0.2) : 0);
+    const lookOffset = mood === 'left' ? -0.6 : (mood === 'right' ? 0.6 : 0);
+
+    // Aura espiritual brillante detrás del casco
+    if (mood === 'nitro' || w >= 100) {
+        drawPx(2 + shakeX, 1, 12, 13, spirit.accentColor + '55');
+    }
+
+    // Hombros / Buzo antiflama
+    drawPx(2 + shakeX, 13, 12, 3, spirit.helmetColor);
+    drawPx(5 + shakeX, 13, 6, 3, '#18181b');
+
+    // Casco / Cabeza base
+    drawPx(3 + shakeX, 2, 10, 11, spirit.helmetColor);
+    drawPx(4 + shakeX, 1, 8, 2, spirit.helmetColor);
+
+    // Detalles distintivos de cada casco histórico
+    if (spirit.shortName === 'SENNA') {
+        // Franjas verdes y azules del icónico casco amarillo de Ayrton
+        drawPx(3 + shakeX, 4, 10, 1, '#16a34a');
+        drawPx(3 + shakeX, 5, 10, 1, '#1d4ed8');
+    } else if (spirit.shortName === 'PROST') {
+        // Franja azul y roja francesa
+        drawPx(4 + shakeX, 2, 8, 1.5, '#2563eb');
+        drawPx(3 + shakeX, 4, 10, 1, '#dc2626');
+    } else if (spirit.shortName === 'SCHUMI') {
+        // Detalle superior azul con estrellas blancas
+        drawPx(5 + shakeX, 1.5, 6, 1.5, '#1e3a8a');
+        drawPx(6 + shakeX, 2, 1, 1, '#ffffff');
+        drawPx(9 + shakeX, 2, 1, 1, '#ffffff');
+    } else if (spirit.shortName === 'LAUDA') {
+        // Línea blanca limpia sobre rojo
+        drawPx(3 + shakeX, 4, 10, 0.8, '#f8fafc');
+    }
+
+    // Rostro / Abertura del visor
+    drawPx(4 + shakeX, 5, 8, 6, spirit.skin);
+
+    // Cejas y ojos expresivos estilo Doomguy
+    const eyeX = 5 + shakeX + lookOffset;
+    if (spirit.goggles) {
+        // Antiparras clásicas de Juan Manuel Fangio
+        drawPx(4 + shakeX, 5.5, 3.5, 2.5, '#475569');
+        drawPx(8.5 + shakeX, 5.5, 3.5, 2.5, '#475569');
+        drawPx(4.5 + shakeX, 6, 2.5, 1.5, spirit.visorColor);
+        drawPx(9 + shakeX, 6, 2.5, 1.5, spirit.visorColor);
+    } else {
+        // Ojos intensos de piloto mirando la pista
+        drawPx(eyeX, 6.2, 1.5, 1.2, '#ffffff');
+        drawPx(eyeX + 4, 6.2, 1.5, 1.2, '#ffffff');
+        drawPx(eyeX + 0.4, 6.2, 0.9, 1.2, '#09090b');
+        drawPx(eyeX + 4.4, 6.2, 0.9, 1.2, '#09090b');
+        // Cejas fruncidas de concentración
+        drawPx(eyeX - 0.2, 5.4, 2, 0.7, spirit.hair);
+        drawPx(eyeX + 3.8, 5.4, 2, 0.7, spirit.hair);
+    }
+
+    // Boca / Expresión según estado (DOOM style)
+    if (mood === 'hurt') {
+        // Mueca de impacto + sangre/chispas pixeladas
+        drawPx(6 + shakeX, 9, 4, 1.5, '#7f1d1d');
+        drawPx(4.5 + shakeX, 8.5, 1, 1.5, '#dc2626');
+    } else if (mood === 'nitro') {
+        // Sonrisa épica / grito de velocidad con ojos brillantes
+        drawPx(5.5 + shakeX, 9, 5, 1.5, '#ffffff');
+        drawPx(eyeX + 0.4, 6.2, 0.9, 1.2, spirit.accentColor);
+        drawPx(eyeX + 4.4, 6.2, 0.9, 1.2, spirit.accentColor);
+    } else {
+        // Boca firme determinada
+        drawPx(6.2 + shakeX, 9.2, 3.6, 0.8, '#7c2d12');
+    }
+
+    // Mentonera del casco integral (para Eras 2 a 5)
+    if (!spirit.goggles) {
+        drawPx(3.5 + shakeX, 10.5, 9, 2.5, spirit.helmetColor);
+        drawPx(6 + shakeX, 11, 4, 1, '#18181b'); // Respiradero
+    } else {
+        // Correa de cuero de Fangio
+        drawPx(4 + shakeX, 11, 8, 1.2, '#451a03');
+    }
+}
+
+// ============================================================================
+// 4. ESTADO GLOBAL DEL JUEGO Y PROGRESIÓN
+// ============================================================================
+const STATE = {
+    mode: 'MENU', // MENU, SELECTOR, STORY, RACING, PAUSED, RESULT
+    isCampaign: true,
+    unlockedIndex: 0, // 0 a 24 (Era * 5 + Circuito)
+    currentEraIdx: 0,
+    currentCircuitIdx: 0,
+
+    // Nuevas opciones de Cámara y Transmisión
+    cameraMode: '1ST',     // '1ST' (Cabina), '3RD' (Persecución), 'TOP' (Vista desde arriba)
+    transmission: 'AUTO',  // 'AUTO' o 'MANUAL'
+    manualGear: 1,         // Marcha actual en modo manual (1 a car.gears)
+    shifterAnimY: 0,       // Animación de palanca secuencial (-1 a +1)
+    torqueBoostTimer: 0,   // Impulso extra al pasar cambio en RPM óptimas
+    
+    // Física del vehículo del jugador
+    playerX: 0,          // -1 (borde izq) a +1 (borde der), fuera de [-1, 1] es banquina
+    positionZ: 0,        // Posición longitudinal en la pista
+    speed: 0,            // Velocidad actual en km/h
+    steer: 0,            // Ángulo de giro actual
+    health: 100,         // Integridad chasis/motor
+    nitro: 50,           // Energía espiritual (0 a 100)
+    isNitroActive: false,
+    lap: 1,
+    raceTime: 0,
+    playerRank: 12,
+    crashFlash: 0,
+    screenShake: 0,
+    frameCounter: 0,
+
+    // Datos de pista generada
+    segments: [],
+    trackLength: 0,
+    segmentLength: 200,
+    rivals: [],
+    particles: [],
+    rainDrops: []
+};
+
+// Cargar progreso guardado en localStorage si existe
+try {
+    const saved = localStorage.getItem('tc_doom_legado_progress');
+    if (saved !== null) {
+        STATE.unlockedIndex = Math.min(24, Math.max(0, parseInt(saved, 10) || 0));
+    }
+} catch (e) {}
+
+function saveProgress() {
+    try {
+        localStorage.setItem('tc_doom_legado_progress', STATE.unlockedIndex.toString());
+    } catch (e) {}
+    updateSaveBadge();
+}
+
+function updateSaveBadge() {
+    const era = Math.floor(STATE.unlockedIndex / 5) + 1;
+    const race = STATE.unlockedIndex + 1;
+    document.getElementById('saveProgressBadge').textContent = `PROGRESO: ERA ${era} - CARRERA ${race}/25`;
+}
+
+// ============================================================================
+// 5. CONSTRUCCIÓN DE PISTA PSEUDO-3D Y RIVALES IA
+// ============================================================================
+function buildTrack(eraIdx, circuitIdx) {
+    const era = ERAS_DATA[eraIdx];
+    const circuit = era.circuits[circuitIdx];
+    STATE.segments = [];
+    const totalSegments = circuit.length * 10;
+
+    // Generar curvas, lomas y rectas características según el circuito
+    for (let i = 0; i < totalSegments; i++) {
+        const t = i / totalSegments;
+        let curve = 0;
+        let y = 0;
+
+        // Patrones de curvas variados y emocionantes
+        if (i > 15 && i < totalSegments - 20) {
+            curve = (
+                Math.sin(t * Math.PI * 6 + circuitIdx) * 1.6 +
+                Math.cos(t * Math.PI * 14 - eraIdx) * 1.1
+            ) * circuit.curvature;
+
+            // Zonas de recta rápida para aprovechar el rebufo y el nitro
+            if (Math.sin(t * Math.PI * 4) > 0.65) {
+                curve *= 0.15;
+            }
+
+            // Elevaciones (sierras de Tandil, Balcarce, El Zonda, Paraná)
+            y = (
+                Math.sin(t * Math.PI * 8 + eraIdx) * 900 +
+                Math.cos(t * Math.PI * 4) * 600
+            ) * circuit.hilliness;
+        }
+
+        // Decoración lateral (carteles retro, árboles, público, torres)
+        const sprites = [];
+        if (i % 14 === 0) {
+            sprites.push({ type: 'banner', side: -1.45, color: i % 28 === 0 ? '#dc2626' : '#facc15' });
+            sprites.push({ type: 'banner', side: 1.45, color: i % 28 === 0 ? '#2563eb' : '#16a34a' });
+        } else if (i % 5 === 0) {
+            const side = (i % 10 === 0) ? -1.7 - Math.random() * 1.5 : 1.7 + Math.random() * 1.5;
+            const kind = circuit.night ? 'lamp' : (eraIdx === 3 && circuitIdx === 4 ? 'palm' : 'tree');
+            sprites.push({ type: kind, side });
+        }
+        if (i % 18 === 4) {
+            sprites.push({ type: 'crowd', side: (i % 36 === 4) ? -1.35 : 1.35 });
+        }
+
+        const isDark = Math.floor(i / 3) % 2 === 0;
+        const isStartLine = i < 6;
+
+        STATE.segments.push({
+            index: i,
+            p1: { world: { y: i === 0 ? 0 : STATE.segments[i - 1].p2.world.y, z: i * STATE.segmentLength }, camera: {}, screen: {} },
+            p2: { world: { y: y, z: (i + 1) * STATE.segmentLength }, camera: {}, screen: {} },
+            curve,
+            sprites,
+            color: {
+                road: isStartLine ? '#f8fafc' : (isDark ? circuit.roadDark : circuit.roadLight),
+                grass: isDark ? circuit.grassDark : circuit.grassLight,
+                rumble: isDark ? circuit.rumbleDark : circuit.rumbleLight,
+                lane: isDark ? 'transparent' : '#e4e4e7'
+            }
+        });
+    }
+
+    STATE.trackLength = STATE.segments.length * STATE.segmentLength;
+
+    // Generar 11 rivales históricos con colores clásicos del TC / TC2000
+    const rivalColors = [
+        '#dc2626', '#2563eb', '#16a34a', '#eab308', '#f97316',
+        '#9333ea', '#06b6d4', '#f43f5e', '#84cc16', '#e11d48', '#3b82f6'
+    ];
+    STATE.rivals = [];
+    for (let r = 0; r < 11; r++) {
+        const laneOffset = ((r % 3) - 1) * 0.52;
+        const startZ = (r + 1) * 1400 + 600;
+        const skillFactor = 0.76 + (r / 11) * 0.21; // Escalonados de menor a mayor ritmo
+        STATE.rivals.push({
+            id: r,
+            x: laneOffset,
+            z: startZ,
+            speed: era.car.maxSpeed * skillFactor,
+            baseSpeed: era.car.maxSpeed * skillFactor,
+            color: rivalColors[r % rivalColors.length],
+            lap: 1,
+            totalDist: startZ
+        });
+    }
+
+    // Partículas de lluvia si el circuito tiene clima lluvioso
+    STATE.rainDrops = [];
+    if (circuit.rain) {
+        for (let d = 0; d < 90; d++) {
+            STATE.rainDrops.push({
+                x: Math.random(),
+                y: Math.random(),
+                len: 0.03 + Math.random() * 0.04,
+                speed: 0.025 + Math.random() * 0.02
+            });
+        }
+    }
+}
+
+// ============================================================================
+// 6. INICIALIZACIÓN DE CARRERA Y FLUJO DE PANTALLAS
+// ============================================================================
+function startRace(eraIdx, circuitIdx) {
+    STATE.currentEraIdx = eraIdx;
+    STATE.currentCircuitIdx = circuitIdx;
+    buildTrack(eraIdx, circuitIdx);
+
+    const era = ERAS_DATA[eraIdx];
+    const circuit = era.circuits[circuitIdx];
+
+    STATE.playerX = 0;
+    STATE.positionZ = 0;
+    STATE.speed = 0;
+    STATE.steer = 0;
+    STATE.manualGear = 1;
+    STATE.shifterAnimY = 0;
+    STATE.torqueBoostTimer = 0;
+    STATE.health = 100;
+    STATE.nitro = 50;
+    STATE.isNitroActive = false;
+    STATE.lap = 1;
+    STATE.raceTime = 0;
+    STATE.playerRank = 12;
+    STATE.crashFlash = 0;
+    STATE.screenShake = 0;
+    STATE.particles = [];
+
+    // Actualizar HUD inferior y controles en pantalla
+    document.getElementById('hudSpiritTag').textContent = era.spirit.shortName;
+    document.getElementById('hudLap').textContent = `VUELTA 1/${circuit.laps}`;
+    document.getElementById('statusMessage').textContent = `${era.shortName} • ${circuit.name.toUpperCase()}`;
+
+    hideAllScreens();
+    document.getElementById('btnPause').classList.remove('hidden');
+    document.getElementById('btnCameraToggle').classList.remove('hidden');
+    updateCameraUI();
+    updateTransmissionUI();
+
+    // Mostrar controles táctiles (pedales + dirección) siempre disponibles para táctil/celular o clic
+    document.getElementById('touchControls').classList.remove('hidden');
+
+    STATE.mode = 'RACING';
+    audio.startEngine();
+    audio.playBeep(523, 0.15);
+}
+
+function updateCameraUI() {
+    const labels = { '1ST': '📷 1RA', '3RD': '📷 3RA', 'TOP': '📷 ARRIBA' };
+    document.getElementById('btnCameraToggle').textContent = labels[STATE.cameraMode];
+    document.getElementById('btnPauseCam').textContent = `CAM: ${STATE.cameraMode === '1ST' ? '1RA' : (STATE.cameraMode === '3RD' ? '3RA' : 'ARRIBA')}`;
+
+    // Actualizar botones del menú principal
+    document.getElementById('btnCam1st').className = STATE.cameraMode === '1ST' ? 'doom-btn py-1.5 px-1 font-doom text-[9px]' : 'doom-btn-secondary py-1.5 px-1 font-doom text-[9px]';
+    document.getElementById('btnCam3rd').className = STATE.cameraMode === '3RD' ? 'doom-btn py-1.5 px-1 font-doom text-[9px]' : 'doom-btn-secondary py-1.5 px-1 font-doom text-[9px]';
+    document.getElementById('btnCamTop').className = STATE.cameraMode === 'TOP' ? 'doom-btn py-1.5 px-1 font-doom text-[9px]' : 'doom-btn-secondary py-1.5 px-1 font-doom text-[9px]';
+}
+
+function cycleCamera() {
+    const order = ['1ST', '3RD', 'TOP'];
+    const nextIdx = (order.indexOf(STATE.cameraMode) + 1) % order.length;
+    STATE.cameraMode = order[nextIdx];
+    updateCameraUI();
+    audio.playBeep(600, 0.08);
+    const names = { '1ST': 'CÁMARA 1RA PERSONA (CABINA)', '3RD': 'CÁMARA 3RA PERSONA (PERSECUCIÓN)', 'TOP': 'CÁMARA CENITAL (VISTA DESDE ARRIBA)' };
+    document.getElementById('statusMessage').textContent = names[STATE.cameraMode];
+}
+
+function updateTransmissionUI() {
+    const isManual = STATE.transmission === 'MANUAL';
+    document.getElementById('btnTransAuto').className = !isManual ? 'doom-btn py-1.5 px-2 font-doom text-[10px]' : 'doom-btn-secondary py-1.5 px-2 font-doom text-[10px]';
+    document.getElementById('btnTransManual').className = isManual ? 'doom-btn py-1.5 px-2 font-doom text-[10px]' : 'doom-btn-secondary py-1.5 px-2 font-doom text-[10px]';
+    document.getElementById('btnPauseTrans').textContent = `CAJA: ${isManual ? 'MANUAL' : 'AUTO'}`;
+
+    const shifterPanel = document.getElementById('manualShifterPanel');
+    const shiftLights = document.getElementById('shiftLightsBar');
+
+    if (isManual && (STATE.mode === 'RACING' || STATE.mode === 'PAUSED')) {
+        shifterPanel.classList.remove('hidden');
+        shiftLights.classList.remove('hidden');
+        const era = ERAS_DATA[STATE.currentEraIdx];
+        document.getElementById('shifterModelLabel').textContent = era.car.shifterLabel;
+        renderShifterCanvas();
+    } else {
+        shifterPanel.classList.add('hidden');
+        shiftLights.classList.add('hidden');
+    }
+}
+
+function shiftGear(delta) {
+    if (STATE.transmission !== 'MANUAL' || STATE.mode !== 'RACING') return;
+    const era = ERAS_DATA[STATE.currentEraIdx];
+    const maxGears = era.car.gears;
+    const oldGear = STATE.manualGear;
+    const newGear = Math.max(1, Math.min(maxGears, oldGear + delta));
+
+    if (newGear !== oldGear) {
+        // Evaluar si el cambio hacia arriba se hizo en zona óptima de RPM (72% a 94%)
+        const gearInfo = calculateGearAndRpm(STATE.speed, era.car.maxSpeed, maxGears);
+        if (delta > 0 && gearInfo.rpmRatio >= 0.72 && gearInfo.rpmRatio <= 0.95) {
+            STATE.torqueBoostTimer = 0.85; // Impulso extra de torque por cambio perfecto
+            audio.playBeep(780, 0.09);
+            document.getElementById('statusMessage').textContent = "⚡ ¡CAMBIO PERFECTO! (+TORQUE)";
+        } else {
+            audio.playBeep(delta > 0 ? 480 : 360, 0.07);
+        }
+
+        STATE.manualGear = newGear;
+        STATE.shifterAnimY = delta > 0 ? 1 : -1;
+        renderShifterCanvas();
+    }
+}
+
+function setExactGear(targetGear) {
+    if (STATE.transmission !== 'MANUAL' || STATE.mode !== 'RACING') return;
+    const era = ERAS_DATA[STATE.currentEraIdx];
+    const clamped = Math.max(1, Math.min(era.car.gears, targetGear));
+    if (clamped !== STATE.manualGear) {
+        shiftGear(clamped - STATE.manualGear);
+    }
+}
+
+function showStoryBriefing(eraIdx, circuitIdx) {
+    STATE.currentEraIdx = eraIdx;
+    STATE.currentCircuitIdx = circuitIdx;
+
+    const era = ERAS_DATA[eraIdx];
+    const circuit = era.circuits[circuitIdx];
+
+    document.getElementById('storyEraTag').textContent = `${era.code} // ${era.title}`;
+    document.getElementById('storyRaceNum').textContent = `CARRERA ${circuitIdx + 1} DE 5`;
+    document.getElementById('storySpiritName').textContent = era.spirit.name;
+    document.getElementById('storySpiritTitle').textContent = era.spirit.title;
+    document.getElementById('storyCircuitTitle').textContent = `${circuitIdx + 1}. ${circuit.name.toUpperCase()}`;
+    document.getElementById('storyNarrativeText').textContent = circuit.narrative;
+    document.getElementById('storySpiritQuote').textContent = era.spirit.quote;
+
+    document.getElementById('specCar').textContent = era.car.name;
+    document.getElementById('specSurface').textContent = circuit.surface;
+    document.getElementById('specWeather').textContent = circuit.weather;
+
+    const portraitCanvas = document.getElementById('storyPortraitCanvas');
+    drawSpiritPortrait(portraitCanvas, era.spirit, 'normal', 0);
+
+    hideAllScreens();
+    document.getElementById('storyScreen').classList.remove('hidden');
+    STATE.mode = 'STORY';
+}
+
+function finishRace() {
+    STATE.mode = 'RESULT';
+    audio.stopEngine();
+    document.getElementById('btnPause').classList.add('hidden');
+    document.getElementById('btnCameraToggle').classList.add('hidden');
+    document.getElementById('touchControls').classList.add('hidden');
+    document.getElementById('manualShifterPanel').classList.add('hidden');
+    document.getElementById('shiftLightsBar').classList.add('hidden');
+
+    const pos = STATE.playerRank;
+    const isPodium = pos <= 3;
+    const globalIdx = STATE.currentEraIdx * 5 + STATE.currentCircuitIdx;
+
+    const mins = Math.floor(STATE.raceTime / 60).toString().padStart(2, '0');
+    const secs = (STATE.raceTime % 60).toFixed(2).padStart(5, '0');
+
+    document.getElementById('resultPosition').textContent = `${pos}° PUESTO`;
+    document.getElementById('resultPosition').className = `font-doom text-3xl sm:text-4xl ${isPodium ? 'text-yellow-400' : 'text-red-500'}`;
+    document.getElementById('resultTime').textContent = `TIEMPO OFICIAL: ${mins}:${secs}`;
+
+    const btnNext = document.getElementById('btnNextRace');
+    const era = ERAS_DATA[STATE.currentEraIdx];
+
+    if (isPodium) {
+        audio.playVictory();
+        if (globalIdx >= STATE.unlockedIndex && STATE.unlockedIndex < 24) {
+            STATE.unlockedIndex = globalIdx + 1;
+            saveProgress();
+        }
+
+        if (globalIdx === 24) {
+            // ¡COMPLETÓ LAS 25 CARRERAS!
+            document.getElementById('resultHeader').textContent = "🏆 ¡LEYENDA ETERNA CONSAGRADA! 🏆";
+            document.getElementById('resultMessage').textContent =
+                "¡Has conquistado las 5 Eras y los 25 circuitos de la historia! Los espíritus de Fangio, Lauda, Senna, Prost y Schumacher saludan al nuevo inmortal del automovilismo argentino.";
+            btnNext.textContent = "★ VOLVER AL MENÚ PRINCIPAL";
+            btnNext.onclick = () => showMenu();
+        } else {
+            const isEndOfEra = STATE.currentCircuitIdx === 4;
+            document.getElementById('resultHeader').textContent = isEndOfEra
+                ? `★ ¡${era.shortName} COMPLETADA! ★`
+                : "¡PODIO CONQUISTADO!";
+            document.getElementById('resultMessage').textContent = isEndOfEra
+                ? `¡Has dominado los 5 circuitos de ${era.shortName}! Una nueva grieta temporal se abre hacia la siguiente época.`
+                : `¡Gran carrera! ${era.spirit.shortName} aprueba tu maniobra. Listo para el siguiente circuito.`;
+            btnNext.classList.remove('hidden');
+            btnNext.textContent = "SIGUIENTE CARRERA ►";
+            btnNext.onclick = () => {
+                const nextGlobal = globalIdx + 1;
+                showStoryBriefing(Math.floor(nextGlobal / 5), nextGlobal % 5);
+            };
+        }
+    } else {
+        audio.playCrash();
+        document.getElementById('resultHeader').textContent = "FUERA DEL PODIO";
+        document.getElementById('resultMessage').textContent =
+            `Terminaste ${pos}°. Necesitas finalizar entre los 3 primeros (Podio) para avanzar en la historia.`;
+        btnNext.classList.add('hidden');
+    }
+
+    hideAllScreens();
+    document.getElementById('resultScreen').classList.remove('hidden');
+}
+
+function hideAllScreens() {
+    ['menuScreen', 'selectorScreen', 'storyScreen', 'resultScreen', 'pauseScreen'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+    });
+}
+
+function showMenu() {
+    audio.stopEngine();
+    STATE.mode = 'MENU';
+    document.getElementById('btnPause').classList.add('hidden');
+    document.getElementById('btnCameraToggle').classList.add('hidden');
+    document.getElementById('touchControls').classList.add('hidden');
+    document.getElementById('manualShifterPanel').classList.add('hidden');
+    document.getElementById('shiftLightsBar').classList.add('hidden');
+    updateSaveBadge();
+    updateCameraUI();
+    updateTransmissionUI();
+    hideAllScreens();
+    document.getElementById('menuScreen').classList.remove('hidden');
+}
+
+// ============================================================================
+// 7. RENDERIZADO E INTERACCIÓN DE LA CAJA DE CAMBIOS HISTÓRICA TÁCTIL
+// ============================================================================
+const SHIFTER_ZONES = {
+    H3: [
+        { gear: 1, x: 0.28, y: 0.78, label: '1' },
+        { gear: 2, x: 0.72, y: 0.22, label: '2' },
+        { gear: 3, x: 0.72, y: 0.78, label: '3' }
+    ],
+    H4: [
+        { gear: 1, x: 0.28, y: 0.22, label: '1' },
+        { gear: 2, x: 0.28, y: 0.78, label: '2' },
+        { gear: 3, x: 0.72, y: 0.22, label: '3' },
+        { gear: 4, x: 0.72, y: 0.78, label: '4' }
+    ],
+    H5: [
+        { gear: 1, x: 0.22, y: 0.22, label: '1' },
+        { gear: 2, x: 0.22, y: 0.78, label: '2' },
+        { gear: 3, x: 0.50, y: 0.22, label: '3' },
+        { gear: 4, x: 0.50, y: 0.78, label: '4' },
+        { gear: 5, x: 0.78, y: 0.22, label: '5' }
+    ]
+};
+
+function renderShifterCanvas() {
+    const sc = document.getElementById('shifterCanvas');
+    if (!sc) return;
+    const sctx = sc.getContext('2d');
+    const w = sc.width;
+    const h = sc.height;
+    const era = ERAS_DATA[STATE.currentEraIdx];
+    const stype = era.car.shifterType;
+
+    sctx.clearRect(0, 0, w, h);
+
+    // Fondo metálico oscuro de la selectora
+    sctx.fillStyle = '#141416';
+    sctx.fillRect(0, 0, w, h);
+
+    if (stype === 'H3' || stype === 'H4' || stype === 'H5') {
+        const zones = SHIFTER_ZONES[stype];
+        // Dibujar rejilla en H cromada
+        sctx.strokeStyle = '#71717a';
+        sctx.lineWidth = 5;
+        sctx.lineCap = 'round';
+
+        // Barra horizontal neutral
+        const minX = Math.min(...zones.map(z => z.x)) * w;
+        const maxX = Math.max(...zones.map(z => z.x)) * w;
+        sctx.beginPath();
+        sctx.moveTo(minX, h * 0.5);
+        sctx.lineTo(maxX, h * 0.5);
+        sctx.stroke();
+
+        // Ranuras verticales y etiquetas de marcha
+        sctx.font = 'bold 11px monospace';
+        sctx.textAlign = 'center';
+        sctx.textBaseline = 'middle';
+
+        zones.forEach(z => {
+            const zx = z.x * w;
+            const zy = z.y * h;
+            sctx.strokeStyle = '#52525b';
+            sctx.lineWidth = 5;
+            sctx.beginPath();
+            sctx.moveTo(zx, h * 0.5);
+            sctx.lineTo(zx, zy);
+            sctx.stroke();
+
+            // Número de marcha
+            sctx.fillStyle = STATE.manualGear === z.gear ? '#facc15' : '#a1a1aa';
+            sctx.fillText(z.label, zx, z.y < 0.5 ? zy - 12 : zy + 12);
+        });
+
+        // Posición de la bocha de la palanca en la marcha engranada
+        const activeZone = zones.find(z => z.gear === STATE.manualGear) || zones[0];
+        const kx = activeZone.x * w;
+        const ky = activeZone.y * h;
+
+        // Varilla desde el centro
+        sctx.strokeStyle = '#d4d4d8';
+        sctx.lineWidth = 3;
+        sctx.beginPath();
+        sctx.moveTo(w * 0.5, h * 0.5);
+        sctx.lineTo(kx, ky);
+        sctx.stroke();
+
+        // Bocha histórica (Baquelita negra 40s, Blanca Hurst 70s, Cuero rojo/negro 80s/90s)
+        sctx.fillStyle = stype === 'H3' ? '#09090b' : (stype === 'H4' ? '#f8fafc' : '#dc2626');
+        sctx.beginPath();
+        sctx.arc(kx, ky, 10, 0, Math.PI * 2);
+        sctx.fill();
+        sctx.strokeStyle = '#facc15';
+        sctx.lineWidth = 2;
+        sctx.stroke();
+
+        sctx.fillStyle = stype === 'H4' ? '#09090b' : '#ffffff';
+        sctx.fillText(STATE.manualGear.toString(), kx, ky + 1);
+    } else {
+        // CAJA SECUENCIAL DE 6 MARCHAS (Era 4: 2000s / Era 5: Actualidad)
+        // Ranura vertical central
+        sctx.fillStyle = '#27272a';
+        sctx.fillRect(w * 0.42, h * 0.14, w * 0.16, h * 0.72);
+        sctx.strokeStyle = '#71717a';
+        sctx.strokeRect(w * 0.42, h * 0.14, w * 0.16, h * 0.72);
+
+        // Indicadores - (Arriba) y + (Abajo, tirar hacia atrás para subir cambio)
+        sctx.font = 'bold 11px monospace';
+        sctx.textAlign = 'center';
+        sctx.fillStyle = '#f87171';
+        sctx.fillText('BAJAR (-)', w * 0.5, h * 0.08);
+        sctx.fillStyle = '#4ade80';
+        sctx.fillText('SUBIR (+)', w * 0.5, h * 0.94);
+
+        // Display digital gigante de marcha engranada al costado
+        sctx.fillStyle = '#09090b';
+        sctx.fillRect(6, h * 0.34, 24, 34);
+        sctx.strokeStyle = '#ef4444';
+        sctx.strokeRect(6, h * 0.34, 24, 34);
+        sctx.fillStyle = '#facc15';
+        sctx.font = 'bold 20px monospace';
+        sctx.fillText(STATE.manualGear.toString(), 18, h * 0.52);
+
+        // Empuñadura de aluminio de la palanca secuencial
+        const leverY = h * 0.5 + STATE.shifterAnimY * 22;
+        sctx.fillStyle = stype === 'PADDLE6' ? '#e11d48' : '#d4d4d8';
+        sctx.fillRect(w * 0.30, leverY - 9, w * 0.40, 18);
+        sctx.strokeStyle = '#09090b';
+        sctx.lineWidth = 2;
+        sctx.strokeRect(w * 0.30, leverY - 9, w * 0.40, 18);
+    }
+}
+
+// Eventos táctiles y de mouse directos sobre el canvas de la palanca de cambios
+function setupShifterInteraction() {
+    const sc = document.getElementById('shifterCanvas');
+    let touchStartY = null;
+
+    const handlePoint = (clientX, clientY) => {
+        if (STATE.transmission !== 'MANUAL' || STATE.mode !== 'RACING') return;
+        const rect = sc.getBoundingClientRect();
+        const nx = (clientX - rect.left) / rect.width;
+        const ny = (clientY - rect.top) / rect.height;
+
+        const era = ERAS_DATA[STATE.currentEraIdx];
+        const stype = era.car.shifterType;
+
+        if (stype === 'H3' || stype === 'H4' || stype === 'H5') {
+            const zones = SHIFTER_ZONES[stype];
+            let closest = null;
+            let minDist = 999;
+            zones.forEach(z => {
+                const dist = Math.hypot(nx - z.x, ny - z.y);
+                if (dist < minDist) {
+                    minDist = dist;
+                    closest = z;
+                }
+            });
+            if (closest && minDist < 0.36) {
+                setExactGear(closest.gear);
+            }
+        } else {
+            // Secuencial: tocar mitad inferior sube marcha (+), mitad superior baja (-)
+            if (ny > 0.52) shiftGear(1);
+            else if (ny < 0.48) shiftGear(-1);
+        }
+    };
+
+    sc.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        const t = e.changedTouches[0];
+        touchStartY = t.clientY;
+        handlePoint(t.clientX, t.clientY);
+    }, { passive: false });
+
+    sc.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        const t = e.changedTouches[0];
+        const era = ERAS_DATA[STATE.currentEraIdx];
+        const stype = era.car.shifterType;
+        if (stype === 'H3' || stype === 'H4' || stype === 'H5') {
+            handlePoint(t.clientX, t.clientY);
+        } else if (touchStartY !== null) {
+            const dy = t.clientY - touchStartY;
+            if (dy > 18) {
+                shiftGear(1);
+                touchStartY = t.clientY;
+            } else if (dy < -18) {
+                shiftGear(-1);
+                touchStartY = t.clientY;
+            }
+        }
+    }, { passive: false });
+
+    sc.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        touchStartY = null;
+        STATE.shifterAnimY = 0;
+        renderShifterCanvas();
+    }, { passive: false });
+
+    sc.addEventListener('mousedown', (e) => {
+        handlePoint(e.clientX, e.clientY);
+    });
+    sc.addEventListener('mouseup', () => {
+        STATE.shifterAnimY = 0;
+        renderShifterCanvas();
+    });
+}
+
+// ============================================================================
+// 8. SELECTOR LIBRE DE ERAS Y CIRCUITOS (25 PISTAS)
+// ============================================================================
+function renderSelectorScreen(selectedEraIdx = 0) {
+    hideAllScreens();
+    document.getElementById('selectorScreen').classList.remove('hidden');
+    STATE.mode = 'SELECTOR';
+
+    const tabsContainer = document.getElementById('eraTabs');
+    tabsContainer.innerHTML = '';
+
+    ERAS_DATA.forEach((era, idx) => {
+        const btn = document.createElement('button');
+        btn.className = idx === selectedEraIdx
+            ? 'doom-btn py-2 px-2 font-doom text-[10px] sm:text-xs text-center'
+            : 'doom-btn-secondary py-2 px-2 font-doom text-[10px] sm:text-xs text-center';
+        btn.innerHTML = `${era.shortName}<br><span class="text-[9px] text-amber-300 font-sans">${era.spirit.shortName}</span>`;
+        btn.onclick = () => renderSelectorScreen(idx);
+        tabsContainer.appendChild(btn);
+    });
+
+    const era = ERAS_DATA[selectedEraIdx];
+    const detail = document.getElementById('eraDetailContainer');
+    detail.innerHTML = `
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-zinc-700 pb-2 gap-2">
+            <div>
+                <div class="text-xs text-red-400 font-doom">${era.code}</div>
+                <h3 class="text-xl sm:text-2xl text-amber-400 font-bold">${era.title}</h3>
+                <p class="text-sm text-zinc-300">Espíritu Guía: <span class="text-yellow-300 font-bold">${era.spirit.name}</span> • Auto: <span class="text-sky-300">${era.car.name}</span></p>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 gap-2 mt-1" id="circuitCardsList"></div>
+    `;
+
+    const cardsList = document.getElementById('circuitCardsList');
+    era.circuits.forEach((circ, cIdx) => {
+        const globalIdx = selectedEraIdx * 5 + cIdx;
+        const isCompleted = globalIdx < STATE.unlockedIndex;
+        const card = document.createElement('div');
+        card.className = 'doom-metal p-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2';
+        card.innerHTML = `
+            <div>
+                <div class="flex items-center gap-2">
+                    <span class="font-doom text-xs text-amber-400">#${cIdx + 1}</span>
+                    <span class="text-lg sm:text-xl font-bold text-white">${circ.name}</span>
+                    ${isCompleted ? '<span class="px-2 py-0.5 bg-emerald-900 border border-emerald-500 text-emerald-300 text-xs">★ COMPLETADO</span>' : ''}
+                </div>
+                <div class="text-xs sm:text-sm text-zinc-300 mt-0.5">
+                    Superficie: <span class="text-amber-200">${circ.surface}</span> • Clima: <span class="text-sky-300">${circ.weather}</span> • Vueltas: ${circ.laps}
+                </div>
+            </div>
+            <button class="doom-btn px-4 py-2 font-doom text-[10px] sm:text-xs shrink-0 w-full sm:w-auto">
+                CORRER PISTA ►
+            </button>
+        `;
+        card.querySelector('button').onclick = () => {
+            STATE.isCampaign = false;
+            showStoryBriefing(selectedEraIdx, cIdx);
+        };
+        cardsList.appendChild(card);
+    });
+}
+
+// ============================================================================
+// 8. CONTROLES DE TECLADO Y TÁCTILES
+// ============================================================================
+const KEYS = {
+    up: false,
+    down: false,
+    left: false,
+    right: false,
+    nitro: false
+};
+
+window.addEventListener('keydown', (e) => {
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
+        if (STATE.mode === 'RACING') e.preventDefault();
+    }
+    if (e.code === 'ArrowUp' || e.code === 'KeyW') KEYS.up = true;
+    if (e.code === 'ArrowDown' || e.code === 'KeyS') KEYS.down = true;
+    if (e.code === 'ArrowLeft' || e.code === 'KeyA') KEYS.left = true;
+    if (e.code === 'ArrowRight' || e.code === 'KeyD') KEYS.right = true;
+    if (e.code === 'KeyC') {
+        if (STATE.mode === 'RACING') cycleCamera();
+    }
+    if (e.code === 'KeyE') {
+        if (STATE.mode === 'RACING') shiftGear(1);
+    }
+    if (e.code === 'KeyQ') {
+        if (STATE.mode === 'RACING') shiftGear(-1);
+    }
+    if (['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6'].includes(e.code)) {
+        if (STATE.mode === 'RACING') setExactGear(parseInt(e.code.replace('Digit', ''), 10));
+    }
+    if (e.code === 'Space' || e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+        if (STATE.mode === 'RACING' && !KEYS.nitro && STATE.nitro >= 20 && !STATE.isNitroActive) {
+            STATE.isNitroActive = true;
+            audio.playNitro();
+            document.getElementById('statusMessage').textContent = `¡IMPULSO ESPIRITUAL DE ${ERAS_DATA[STATE.currentEraIdx].spirit.shortName}!`;
+        }
+        KEYS.nitro = true;
+    }
+    if (e.code === 'KeyP' || e.code === 'Escape') {
+        if (STATE.mode === 'RACING') togglePause(true);
+        else if (STATE.mode === 'PAUSED') togglePause(false);
+    }
+});
+
+window.addEventListener('keyup', (e) => {
+    if (e.code === 'ArrowUp' || e.code === 'KeyW') KEYS.up = false;
+    if (e.code === 'ArrowDown' || e.code === 'KeyS') KEYS.down = false;
+    if (e.code === 'ArrowLeft' || e.code === 'KeyA') KEYS.left = false;
+    if (e.code === 'ArrowRight' || e.code === 'KeyD') KEYS.right = false;
+    if (e.code === 'Space' || e.code === 'ShiftLeft' || e.code === 'ShiftRight') KEYS.nitro = false;
+    if (e.code === 'KeyE' || e.code === 'KeyQ') {
+        STATE.shifterAnimY = 0;
+        if (STATE.transmission === 'MANUAL') renderShifterCanvas();
+    }
+});
+
+function bindTouchBtn(id, keyName, onPressExtra = null) {
+    const el = document.getElementById(id);
+    const start = (e) => {
+        e.preventDefault();
+        KEYS[keyName] = true;
+        el.classList.add('pressed');
+        if (onPressExtra) onPressExtra();
+    };
+    const end = (e) => {
+        e.preventDefault();
+        KEYS[keyName] = false;
+        el.classList.remove('pressed');
+    };
+    el.addEventListener('touchstart', start, { passive: false });
+    el.addEventListener('touchend', end, { passive: false });
+    el.addEventListener('touchcancel', end, { passive: false });
+    el.addEventListener('mousedown', start);
+    el.addEventListener('mouseup', end);
+    el.addEventListener('mouseleave', end);
+}
+
+bindTouchBtn('touchLeft', 'left');
+bindTouchBtn('touchRight', 'right');
+bindTouchBtn('touchGas', 'up');
+bindTouchBtn('touchBrake', 'down');
+bindTouchBtn('touchNitro', 'nitro', () => {
+    if (STATE.mode === 'RACING' && STATE.nitro >= 20 && !STATE.isNitroActive) {
+        STATE.isNitroActive = true;
+        audio.playNitro();
+    }
+});
+
+function togglePause(pause) {
+    if (pause && STATE.mode === 'RACING') {
+        STATE.mode = 'PAUSED';
+        updateCameraUI();
+        updateTransmissionUI();
+        document.getElementById('pauseScreen').classList.remove('hidden');
+    } else if (!pause && STATE.mode === 'PAUSED') {
+        STATE.mode = 'RACING';
+        updateTransmissionUI();
+        document.getElementById('pauseScreen').classList.add('hidden');
+    }
+}
+
+// ============================================================================
+// 9. ACTUALIZACIÓN DE FÍSICA E INTELIGENCIA ARTIFICIAL (CON CAJA MANUAL REALISTA)
+// ============================================================================
+function updatePhysics(dt) {
+    if (STATE.mode !== 'RACING') return;
+
+    STATE.frameCounter++;
+    STATE.raceTime += dt;
+
+    const era = ERAS_DATA[STATE.currentEraIdx];
+    const circuit = era.circuits[STATE.currentCircuitIdx];
+    const car = era.car;
+
+    if (STATE.torqueBoostTimer > 0) {
+        STATE.torqueBoostTimer = Math.max(0, STATE.torqueBoostTimer - dt);
+    }
+
+    // Gestión del Impulso Espiritual / Nitro
+    if (STATE.isNitroActive) {
+        STATE.nitro -= 28 * dt;
+        if (STATE.nitro <= 0) {
+            STATE.nitro = 0;
+            STATE.isNitroActive = false;
+        }
+    } else {
+        if (STATE.speed > car.maxSpeed * 0.65 && Math.abs(STATE.playerX) < 0.95) {
+            STATE.nitro = Math.min(100, STATE.nitro + 5.5 * dt);
+        }
+    }
+
+    const nitroMult = STATE.isNitroActive ? 1.24 : 1.0;
+    const torqueMult = STATE.torqueBoostTimer > 0 ? 1.18 : 1.0;
+
+    // Física diferenciada entre Transmisión Automática y Transmisión Manual
+    if (STATE.transmission === 'AUTO') {
+        const effectiveMaxSpeed = car.maxSpeed * nitroMult;
+        const effectiveAccel = car.accel * (STATE.isNitroActive ? 1.7 : 1.0);
+
+        if (KEYS.up) {
+            STATE.speed += effectiveAccel * dt;
+        } else if (KEYS.down) {
+            STATE.speed -= car.accel * 2.1 * dt;
+        } else {
+            STATE.speed -= car.accel * 0.45 * dt;
+        }
+        STATE.speed = Math.max(0, Math.min(effectiveMaxSpeed, STATE.speed));
+    } else {
+        // MODO MANUAL: Cada marcha tiene su velocidad tope y banda óptima de torque
+        const g = STATE.manualGear;
+        const totalG = car.gears;
+        const gearTopSpeed = (car.maxSpeed * (g / totalG)) * nitroMult;
+        const gearIdealMinSpeed = car.maxSpeed * ((g - 1) / totalG) * 0.72;
+
+        // Factor de torque según si estás ahogado (marcha muy alta) o pasado de vueltas (corte)
+        let gearEfficiency = 1.0;
+        if (g > 1 && STATE.speed < gearIdealMinSpeed) {
+            // Motor tironeando / ahogado por marcha demasiado larga
+            gearEfficiency = 0.42;
+            if (STATE.frameCounter % 12 === 0 && KEYS.up) {
+                STATE.screenShake = 1.5;
+            }
+        } else if (STATE.speed >= gearTopSpeed * 0.98) {
+            // Corte de inyección al límite de RPM
+            gearEfficiency = 0.05;
+        }
+
+        const effectiveAccel = car.accel * gearEfficiency * torqueMult * (STATE.isNitroActive ? 1.65 : 1.0);
+
+        if (KEYS.up) {
+            if (STATE.speed < gearTopSpeed) {
+                STATE.speed += effectiveAccel * dt;
+            } else {
+                // Retención por corte de RPM
+                STATE.speed -= car.accel * 0.35 * dt;
+            }
+        } else if (KEYS.down) {
+            STATE.speed -= car.accel * 2.2 * dt;
+        } else {
+            // Freno motor más marcado en caja manual
+            STATE.speed -= car.accel * (0.55 + (totalG - g) * 0.08) * dt;
+        }
+    }
+
+    // Penalización por pisar banquina / tierra fuera de pista
+    const offRoad = Math.abs(STATE.playerX) > 1.05;
+    if (offRoad) {
+        STATE.speed -= car.accel * 1.15 * dt;
+        if (STATE.speed > 95 && STATE.frameCounter % 4 === 0) {
+            STATE.screenShake = 3;
+            spawnParticle(0, 0.85, '#a16207');
+        }
+    }
+
+    // Límite por daño del motor/chasis
+    const healthPenalty = STATE.health < 35 ? 0.78 : 1.0;
+    const absoluteCap = car.maxSpeed * nitroMult * healthPenalty;
+    STATE.speed = Math.max(0, Math.min(absoluteCap, STATE.speed));
+
+    // Dirección y fuerza centrífuga en curvas
+    const currentSegIdx = Math.floor(STATE.positionZ / STATE.segmentLength) % STATE.segments.length;
+    const currentSeg = STATE.segments[currentSegIdx];
+    const speedRatio = STATE.speed / car.maxSpeed;
+
+    const rainSlip = circuit.rain ? 1.22 : 1.0;
+    if (KEYS.left) {
+        STATE.playerX -= car.handling * speedRatio * dt;
+        STATE.steer = Math.max(-1, STATE.steer - 6 * dt);
+    } else if (KEYS.right) {
+        STATE.playerX += car.handling * speedRatio * dt;
+        STATE.steer = Math.min(1, STATE.steer + 6 * dt);
+    } else {
+        STATE.steer *= 0.82;
+    }
+
+    // Fuerza centrífuga de la curva empujando al auto hacia el exterior
+    STATE.playerX -= (currentSeg.curve * 0.42 * speedRatio * speedRatio * rainSlip) * dt;
+    STATE.playerX = Math.max(-2.1, Math.min(2.1, STATE.playerX));
+
+    // Avance longitudinal
+    STATE.positionZ += STATE.speed * 13.5 * dt;
+
+    // Comprobar paso por línea de meta / vueltas
+    if (STATE.positionZ >= STATE.trackLength) {
+        STATE.positionZ -= STATE.trackLength;
+        STATE.lap++;
+        if (STATE.lap > circuit.laps) {
+            finishRace();
+            return;
+        } else {
+            audio.playBeep(660, 0.2);
+            document.getElementById('hudLap').textContent = `VUELTA ${STATE.lap}/${circuit.laps}`;
+            document.getElementById('statusMessage').textContent =
+                STATE.lap === circuit.laps ? "¡ÚLTIMA VUELTA! ¡A FONDO!" : `VUELTA ${STATE.lap} DE ${circuit.laps}`;
+        }
+    }
+
+    const playerTotalDist = (STATE.lap - 1) * STATE.trackLength + STATE.positionZ;
+
+    // Actualizar rivales IA y detectar rebufo / colisiones
+    let rank = 1;
+    STATE.rivals.forEach((rival) => {
+        const wave = Math.sin(STATE.raceTime * 1.5 + rival.id) * 12;
+        rival.speed = rival.baseSpeed + wave;
+        rival.z += rival.speed * 13.5 * dt;
+        rival.totalDist += rival.speed * 13.5 * dt;
+
+        if (rival.z >= STATE.trackLength) {
+            rival.z -= STATE.trackLength;
+            rival.lap++;
+        }
+
+        if (rival.totalDist > playerTotalDist) {
+            rank++;
+        }
+
+        let dz = rival.z - STATE.positionZ;
+        if (dz < -STATE.trackLength / 2) dz += STATE.trackLength;
+        if (dz > STATE.trackLength / 2) dz -= STATE.trackLength;
+
+        const dx = Math.abs(rival.x - STATE.playerX);
+
+        if (dz > 180 && dz < 1100 && dx < 0.35 && STATE.speed > 120) {
+            STATE.nitro = Math.min(100, STATE.nitro + 14 * dt);
+            if (STATE.frameCounter % 20 === 0) {
+                document.getElementById('statusMessage').textContent = "⚡ REBUFO AERODINÁMICO (+ESPÍRITU)";
+            }
+        }
+
+        if (Math.abs(dz) < 160 && dx < 0.34) {
+            STATE.speed *= 0.62;
+            STATE.health = Math.max(10, STATE.health - 12);
+            STATE.crashFlash = 1.0;
+            STATE.screenShake = 10;
+            STATE.playerX += (STATE.playerX < rival.x ? -0.25 : 0.25);
+            audio.playCrash();
+            document.getElementById('statusMessage').textContent = "¡IMPACTO DE CHAPA! CUIDA EL CHASIS";
+            for (let s = 0; s < 8; s++) spawnParticle(0, 0.7, '#facc15');
+        }
+    });
+
+    STATE.playerRank = rank;
+
+    STATE.particles.forEach(p => {
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.life -= dt * 2.5;
+    });
+    STATE.particles = STATE.particles.filter(p => p.life > 0);
+
+    if (circuit.rain) {
+        STATE.rainDrops.forEach(d => {
+            d.y += d.speed;
+            d.x -= 0.004 + STATE.steer * 0.006;
+            if (d.y > 1) { d.y = 0; d.x = Math.random(); }
+            if (d.x < 0) d.x += 1;
+            if (d.x > 1) d.x -= 1;
+        });
+    }
+
+    if (STATE.crashFlash > 0) STATE.crashFlash = Math.max(0, STATE.crashFlash - dt * 3.5);
+    if (STATE.screenShake > 0) STATE.screenShake = Math.max(0, STATE.screenShake - dt * 35);
+
+    const gearInfo = calculateGearAndRpm(STATE.speed, car.maxSpeed, car.gears);
+    audio.updateEngine(gearInfo.rpmRatio, STATE.isNitroActive, false);
+
+    updateHUD(gearInfo);
+}
+
+function spawnParticle(nx, ny, color) {
+    STATE.particles.push({
+        x: nx + (Math.random() - 0.5) * 0.2,
+        y: ny,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: -0.2 - Math.random() * 0.4,
+        color,
+        life: 1.0
+    });
+}
+
+function calculateGearAndRpm(speed, maxSpeed, totalGears) {
+    if (STATE.transmission === 'MANUAL') {
+        const g = STATE.manualGear;
+        const gearTop = maxSpeed * (g / totalGears);
+        const gearPrevTop = maxSpeed * ((g - 1) / totalGears) * 0.75;
+        if (speed < 4) return { gear: g.toString(), rpm: 950, rpmRatio: 0.08 };
+        const span = Math.max(15, gearTop - gearPrevTop);
+        const progress = (speed - gearPrevTop) / span;
+        const rpmRatio = Math.min(1.0, Math.max(0.15, progress));
+        const rpm = Math.floor(1400 + rpmRatio * 7800);
+        return { gear: g.toString(), rpm, rpmRatio };
+    }
+
+    if (speed < 5) return { gear: 'N', rpm: 950, rpmRatio: 0.05 };
+    const ratio = Math.min(1, speed / maxSpeed);
+    const gearNum = Math.min(totalGears, Math.floor(ratio * totalGears) + 1);
+    const gearSpan = 1 / totalGears;
+    const gearProgress = ((ratio - (gearNum - 1) * gearSpan) / gearSpan);
+    const rpmRatio = Math.min(1, Math.max(0.2, gearProgress));
+    const rpm = Math.floor(1500 + rpmRatio * 7500);
+    return { gear: gearNum.toString(), rpm, rpmRatio };
+}
+
+function updateHUD(gearInfo) {
+    const era = ERAS_DATA[STATE.currentEraIdx];
+    document.getElementById('hudSpeed').textContent = Math.floor(STATE.speed).toString().padStart(3, '0');
+    document.getElementById('hudGear').textContent = STATE.transmission === 'MANUAL' ? `M${gearInfo.gear}` : gearInfo.gear;
+    document.getElementById('hudRpmText').textContent = gearInfo.rpm;
+    document.getElementById('hudPos').textContent = `${STATE.playerRank}/12`;
+
+    // Barras LED de RPM
+    const leds = document.getElementById('rpmBarContainer').children;
+    const activeLeds = Math.round(gearInfo.rpmRatio * leds.length);
+    for (let i = 0; i < leds.length; i++) {
+        if (i < activeLeds) {
+            leds[i].style.backgroundColor = i < 7 ? '#22c55e' : (i < 10 ? '#eab308' : '#ef4444');
+        } else {
+            leds[i].style.backgroundColor = '#18181b';
+        }
+    }
+
+    // Shift Lights superiores para Caja Manual
+    if (STATE.transmission === 'MANUAL') {
+        const colors = ['#22c55e', '#22c55e', '#eab308', '#ef4444', '#38bdf8'];
+        for (let s = 0; s < 5; s++) {
+            const threshold = 0.65 + s * 0.075;
+            const el = document.getElementById(`sl-${s}`);
+            if (gearInfo.rpmRatio >= threshold) {
+                const blink = gearInfo.rpmRatio > 0.94 && (STATE.frameCounter % 4 < 2);
+                el.style.backgroundColor = blink ? '#ffffff' : colors[s];
+            } else {
+                el.style.backgroundColor = '#27272a';
+            }
+        }
+    }
+
+    // Salud / Integridad
+    const hp = Math.round(STATE.health);
+    document.getElementById('hudHealthText').textContent = `${hp}%`;
+    const hpBar = document.getElementById('hudHealthBar');
+    hpBar.style.width = `${hp}%`;
+    hpBar.className = `h-full transition-all duration-100 ${hp > 50 ? 'bg-emerald-500' : (hp > 25 ? 'bg-amber-500' : 'bg-red-600')}`;
+
+    // Nitro Espiritual
+    const nt = Math.round(STATE.nitro);
+    document.getElementById('hudNitroText').textContent = `${nt}%`;
+    const ntBar = document.getElementById('hudNitroBar');
+    ntBar.style.width = `${nt}%`;
+    ntBar.className = `h-full transition-all duration-100 ${STATE.isNitroActive ? 'bg-yellow-300' : 'bg-sky-400'}`;
+
+    // Retrato animado del piloto en HUD cada 6 frames
+    if (STATE.frameCounter % 6 === 0) {
+        let mood = 'normal';
+        if (STATE.crashFlash > 0.2) mood = 'hurt';
+        else if (STATE.isNitroActive || STATE.speed > era.car.maxSpeed * 0.92) mood = 'nitro';
+        else if (KEYS.left) mood = 'left';
+        else if (KEYS.right) mood = 'right';
+
+        drawSpiritPortrait(document.getElementById('hudPortraitCanvas'), era.spirit, mood, STATE.frameCounter);
+    }
+}
+
+// ============================================================================
+// 10. RENDERIZADOR PSEUDO-3D RETRO (ESTILO DOOM 1993 + CABINA HISTÓRICA)
+// ============================================================================
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// Resolución interna baja intencional para lograr el auténtico pixel-art de 1993 (360x220)
+const RENDER_W = 360;
+const RENDER_H = 220;
+
+function resizeCanvas() {
+    canvas.width = RENDER_W;
+    canvas.height = RENDER_H;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function projectPoint(p, cameraX, cameraY, cameraZ, cameraDepth, width, height, roadWidth) {
+    p.camera.x = (p.world.x || 0) - cameraX;
+    p.camera.y = (p.world.y || 0) - cameraY;
+    p.camera.z = (p.world.z || 0) - cameraZ;
+    const scale = cameraDepth / Math.max(1, p.camera.z);
+    p.screen.scale = scale;
+    p.screen.x = Math.round((width / 2) + (scale * p.camera.x * width / 2));
+    p.screen.y = Math.round((height / 2) - (scale * p.camera.y * height / 2));
+    p.screen.w = Math.round(scale * roadWidth * width / 2);
+}
+
+function drawPolygon(x1, y1, x2, y2, x3, y3, x4, y4, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x3, y3);
+    ctx.lineTo(x4, y4);
+    ctx.closePath();
+    ctx.fill();
+}
+
+function renderWorld() {
+    const era = ERAS_DATA[STATE.currentEraIdx];
+    const circuit = era.circuits[STATE.currentCircuitIdx];
+
+    // Si el jugador eligió Vista Desde Arriba (Top-Down Arcade), usamos el renderizador cenital
+    if (STATE.cameraMode === 'TOP') {
+        renderTopDownWorld(era, circuit);
+        return;
+    }
+
+    ctx.save();
+    if (STATE.screenShake > 0) {
+        const sx = (Math.random() - 0.5) * STATE.screenShake;
+        const sy = (Math.random() - 0.5) * STATE.screenShake;
+        ctx.translate(sx, sy);
+    }
+
+    // 1. CIELO DEGRADADO + DITHERS Y NUBES PIXELADAS
+    const skyGrad = ctx.createLinearGradient(0, 0, 0, RENDER_H * 0.55);
+    skyGrad.addColorStop(0, circuit.skyTop);
+    skyGrad.addColorStop(1, circuit.skyBottom);
+    ctx.fillStyle = skyGrad;
+    ctx.fillRect(0, 0, RENDER_W, RENDER_H * 0.6);
+
+    // Estrellas si es carrera nocturna (Callejero de Santa Fe)
+    if (circuit.night) {
+        ctx.fillStyle = '#fef08a';
+        for (let s = 0; s < 30; s++) {
+            const sx = ((s * 73) + Math.floor(STATE.playerX * 15)) % RENDER_W;
+            const sy = (s * 29) % 85;
+            ctx.fillRect(sx, sy, 1, 1);
+        }
+    }
+
+    // Montañas / Horizonte retro con paralaje
+    const baseIndex = Math.floor(STATE.positionZ / STATE.segmentLength);
+    const basePercent = (STATE.positionZ % STATE.segmentLength) / STATE.segmentLength;
+    const currentCurve = STATE.segments[baseIndex % STATE.segments.length]?.curve || 0;
+    const parallaxOffset = -(STATE.playerX * 40 + currentCurve * 25);
+
+    ctx.fillStyle = circuit.night ? '#0f172a' : (circuit.hilliness > 1 ? '#475569' : '#1e3a8a');
+    ctx.beginPath();
+    ctx.moveTo(0, RENDER_H * 0.52);
+    for (let x = -40; x <= RENDER_W + 40; x += 20) {
+        const mh = Math.abs(Math.sin((x - parallaxOffset) * 0.015)) * (circuit.hilliness > 1 ? 34 : 16);
+        ctx.lineTo(x, RENDER_H * 0.52 - mh);
+    }
+    ctx.lineTo(RENDER_W, RENDER_H * 0.55);
+    ctx.lineTo(0, RENDER_H * 0.55);
+    ctx.fill();
+
+    // Nubes pixeladas estilo 1993
+    if (!circuit.night) {
+        ctx.fillStyle = circuit.rain ? 'rgba(148,163,184,0.45)' : 'rgba(255,255,255,0.55)';
+        for (let c = 0; c < 5; c++) {
+            const cx = ((c * 95 + parallaxOffset * 0.5) % (RENDER_W + 80) + (RENDER_W + 80)) % (RENDER_W + 80) - 40;
+            const cy = 18 + (c % 3) * 14;
+            ctx.fillRect(Math.floor(cx), cy, 34, 6);
+            ctx.fillRect(Math.floor(cx + 6), cy - 4, 20, 4);
+        }
+    }
+
+    // 2. PROYECCIÓN DE SEGMENTOS DE CARRETERA 2.5D
+    // En 3ra persona elevamos un poco más la cámara para ver bien el auto y el horizonte
+    const cameraHeight = STATE.cameraMode === '3RD' ? 1280 : 1050;
+    const cameraDepth = 0.84;
+    const roadWidth = 2100;
+    const drawDistance = 130;
+
+    const baseSeg = STATE.segments[baseIndex % STATE.segments.length];
+    const playerY = baseSeg.p1.world.y + (baseSeg.p2.world.y - baseSeg.p1.world.y) * basePercent;
+
+    let maxY = RENDER_H;
+    let x = 0;
+    let dx = -(baseSeg.curve * basePercent);
+
+    const visibleSegments = [];
+
+    for (let n = 0; n < drawDistance; n++) {
+        const segIdx = (baseIndex + n) % STATE.segments.length;
+        const seg = STATE.segments[segIdx];
+        const looped = segIdx < baseIndex;
+        const camZ = STATE.positionZ - (looped ? STATE.trackLength : 0);
+
+        projectPoint(seg.p1, STATE.playerX * roadWidth - x, playerY + cameraHeight, camZ, cameraDepth, RENDER_W, RENDER_H, roadWidth);
+        projectPoint(seg.p2, STATE.playerX * roadWidth - x - dx, playerY + cameraHeight, camZ, cameraDepth, RENDER_W, RENDER_H, roadWidth);
+
+        x += dx;
+        dx += seg.curve;
+
+        if (seg.p1.camera.z <= cameraDepth || seg.p2.screen.y >= maxY || seg.p2.screen.y >= seg.p1.screen.y) {
+            continue;
+        }
+
+        const p1 = seg.p1.screen;
+        const p2 = seg.p2.screen;
+
+        // Césped / Tierra lateral
+        ctx.fillStyle = seg.color.grass;
+        ctx.fillRect(0, p2.y, RENDER_W, p1.y - p2.y);
+
+        // Pianitos rojos y blancos (rumble strips)
+        const r1 = p1.w * 0.14;
+        const r2 = p2.w * 0.14;
+        drawPolygon(p1.x - p1.w - r1, p1.y, p1.x - p1.w, p1.y, p2.x - p2.w, p2.y, p2.x - p2.w - r2, p2.y, seg.color.rumble);
+        drawPolygon(p1.x + p1.w, p1.y, p1.x + p1.w + r1, p1.y, p2.x + p2.w + r2, p2.y, p2.x + p2.w, p2.y, seg.color.rumble);
+
+        // Asfalto / Pista
+        drawPolygon(p1.x - p1.w, p1.y, p1.x + p1.w, p1.y, p2.x + p2.w, p2.y, p2.x - p2.w, p2.y, seg.color.road);
+
+        // Líneas divisorias de carril
+        if (seg.color.lane !== 'transparent') {
+            const l1 = p1.w * 0.025;
+            const l2 = p2.w * 0.025;
+            drawPolygon(p1.x - l1, p1.y, p1.x + l1, p1.y, p2.x + l2, p2.y, p2.x - l2, p2.y, seg.color.lane);
+        }
+
+        seg.clipY = maxY;
+        visibleSegments.push(seg);
+        maxY = p2.y;
+    }
+
+    // 3. RENDERIZAR SPRITES LATERALES Y RIVALES DE ATRÁS HACIA ADELANTE (PAINTER'S ALGORITHM)
+    for (let n = visibleSegments.length - 1; n >= 0; n--) {
+        const seg = visibleSegments[n];
+        const scale = seg.p1.screen.scale;
+
+        // Sprites de entorno (árboles, carteles retro TC, público, luminarias)
+        seg.sprites.forEach(sp => {
+            const sx = seg.p1.screen.x + (scale * sp.side * roadWidth * RENDER_W / 2);
+            const sy = seg.p1.screen.y;
+            drawRoadsideSprite(sp, sx, sy, scale, seg.clipY);
+        });
+
+        // Rivales en este segmento
+        STATE.rivals.forEach(rival => {
+            const rSegIdx = Math.floor(rival.z / STATE.segmentLength) % STATE.segments.length;
+            if (rSegIdx === seg.index) {
+                const rx = seg.p1.screen.x + (scale * rival.x * roadWidth * RENDER_W / 2);
+                const ry = seg.p1.screen.y;
+                drawRivalCarSprite(rival, rx, ry, scale, seg.clipY, era.car.type, circuit.night);
+            }
+        });
+    }
+
+    // 4. EFECTOS CLIMÁTICOS Y PARTÍCULAS (LLUVIA / CHISPAS / NITRO)
+    if (circuit.rain) {
+        ctx.strokeStyle = 'rgba(186, 230, 253, 0.55)';
+        ctx.lineWidth = 1;
+        STATE.rainDrops.forEach(d => {
+            ctx.beginPath();
+            ctx.moveTo(d.x * RENDER_W, d.y * RENDER_H);
+            ctx.lineTo((d.x - 0.015) * RENDER_W, (d.y + d.len) * RENDER_H);
+            ctx.stroke();
+        });
+    }
+
+    if (STATE.isNitroActive) {
+        // Líneas de hipervelocidad estilo DOOM en los bordes
+        ctx.fillStyle = era.spirit.accentColor + '55';
+        for (let i = 0; i < 8; i++) {
+            const side = i % 2 === 0 ? 0 : RENDER_W - 14;
+            const yPos = ((STATE.frameCounter * 18 + i * 31) % RENDER_H);
+            ctx.fillRect(side, yPos, 14, 18);
+        }
+    }
+
+    STATE.particles.forEach(p => {
+        ctx.fillStyle = p.color;
+        const px = (0.5 + p.x) * RENDER_W;
+        const py = p.y * RENDER_H;
+        ctx.fillRect(Math.floor(px), Math.floor(py), 3, 3);
+    });
+
+    // 5. RENDERIZAR VEHÍCULO SEGÚN CÁMARA (1RA PERSONA CABINA vs 3RA PERSONA PERSECUCIÓN)
+    if (STATE.cameraMode === '1ST') {
+        drawFirstPersonCockpit(era, circuit);
+    } else if (STATE.cameraMode === '3RD') {
+        drawThirdPersonPlayerCar(era, circuit);
+    }
+
+    // 6. DESTELLO ROJO DE IMPACTO ESTILO DOOM
+    if (STATE.crashFlash > 0) {
+        ctx.fillStyle = `rgba(220, 38, 38, ${STATE.crashFlash * 0.45})`;
+        ctx.fillRect(0, 0, RENDER_W, RENDER_H);
+    }
+
+    ctx.restore();
+}
+
+// ============================================================================
+// 10B. RENDERIZADOR VISTA DESDE ARRIBA (TOP-DOWN RETRO ARCADE)
+// ============================================================================
+function renderTopDownWorld(era, circuit) {
+    ctx.save();
+    if (STATE.screenShake > 0) {
+        ctx.translate((Math.random() - 0.5) * STATE.screenShake, (Math.random() - 0.5) * STATE.screenShake);
+    }
+
+    // Fondo de césped/tierra base
+    ctx.fillStyle = circuit.grassDark;
+    ctx.fillRect(0, 0, RENDER_W, RENDER_H);
+
+    const baseIndex = Math.floor(STATE.positionZ / STATE.segmentLength);
+    const basePercent = (STATE.positionZ % STATE.segmentLength) / STATE.segmentLength;
+    const pixelsPerSeg = 14;
+    const roadHalfW = 76;
+
+    // Dibujar franjas horizontales de pista de abajo hacia arriba siguiendo las curvas
+    let roadCenterX = RENDER_W * 0.5 - STATE.playerX * roadHalfW;
+    let curveAccum = 0;
+
+    // Miramos 4 segmentos hacia atrás (debajo del auto) y 18 hacia adelante
+    for (let offset = -4; offset < 20; offset++) {
+        const segIdx = ((baseIndex + offset) % STATE.segments.length + STATE.segments.length) % STATE.segments.length;
+        const seg = STATE.segments[segIdx];
+
+        const screenY = RENDER_H * 0.76 - (offset - basePercent) * pixelsPerSeg;
+        const nextY = screenY - pixelsPerSeg - 1;
+
+        if (offset >= 0) {
+            curveAccum += seg.curve * 3.8;
+            roadCenterX += curveAccum * 0.35;
+        }
+
+        // Franja de césped alternada para sensación de velocidad
+        ctx.fillStyle = seg.color.grass;
+        ctx.fillRect(0, Math.floor(nextY), RENDER_W, pixelsPerSeg + 2);
+
+        // Pianitos laterales
+        ctx.fillStyle = seg.color.rumble;
+        ctx.fillRect(Math.floor(roadCenterX - roadHalfW - 8), Math.floor(nextY), roadHalfW * 2 + 16, pixelsPerSeg + 2);
+
+        // Asfalto
+        ctx.fillStyle = seg.color.road;
+        ctx.fillRect(Math.floor(roadCenterX - roadHalfW), Math.floor(nextY), roadHalfW * 2, pixelsPerSeg + 2);
+
+        // Línea central
+        if (seg.color.lane !== 'transparent') {
+            ctx.fillStyle = seg.color.lane;
+            ctx.fillRect(Math.floor(roadCenterX - 2), Math.floor(nextY), 4, pixelsPerSeg);
+        }
+
+        // Sprites laterales en vista cenital
+        seg.sprites.forEach(sp => {
+            const sx = roadCenterX + sp.side * roadHalfW;
+            if (sp.type === 'tree' || sp.type === 'palm') {
+                ctx.fillStyle = '#052e16';
+                ctx.beginPath();
+                ctx.arc(sx + 2, screenY + 2, 9, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#16a34a';
+                ctx.beginPath();
+                ctx.arc(sx, screenY, 9, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (sp.type === 'crowd') {
+                ctx.fillStyle = '#ef4444';
+                ctx.fillRect(sx - 4, screenY - 3, 3, 3);
+                ctx.fillStyle = '#38bdf8';
+                ctx.fillRect(sx + 1, screenY - 2, 3, 3);
+            }
+        });
+
+        // Rivales visibles en vista cenital
+        STATE.rivals.forEach(rival => {
+            const rSegIdx = Math.floor(rival.z / STATE.segmentLength) % STATE.segments.length;
+            if (rSegIdx === seg.index) {
+                const rx = roadCenterX + rival.x * roadHalfW;
+                drawTopDownCar(rx, screenY, rival.color, 0, era.car.type, false);
+            }
+        });
+    }
+
+    // Auto del jugador en vista cenital (parte inferior central)
+    const playerScreenX = RENDER_W * 0.5;
+    const playerScreenY = RENDER_H * 0.76;
+    drawTopDownCar(playerScreenX, playerScreenY, era.car.hoodColor, STATE.steer * 0.35, era.car.type, true);
+
+    // Lluvia desde arriba
+    if (circuit.rain) {
+        ctx.strokeStyle = 'rgba(186, 230, 253, 0.55)';
+        STATE.rainDrops.forEach(d => {
+            ctx.beginPath();
+            ctx.moveTo(d.x * RENDER_W, d.y * RENDER_H);
+            ctx.lineTo((d.x - 0.01) * RENDER_W, (d.y + d.len) * RENDER_H);
+            ctx.stroke();
+        });
+    }
+
+    if (STATE.crashFlash > 0) {
+        ctx.fillStyle = `rgba(220, 38, 38, ${STATE.crashFlash * 0.45})`;
+        ctx.fillRect(0, 0, RENDER_W, RENDER_H);
+    }
+
+    ctx.restore();
+}
+
+function drawTopDownCar(x, y, color, angle, carType, isPlayer) {
+    ctx.save();
+    ctx.translate(Math.floor(x), Math.floor(y));
+    ctx.rotate(angle);
+
+    const w = 16;
+    const h = 28;
+
+    // Sombra
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    ctx.fillRect(-w / 2 + 2, -h / 2 + 2, w, h);
+
+    // Ruedas negras
+    ctx.fillStyle = '#09090b';
+    ctx.fillRect(-w / 2 - 2, -h * 0.32, 3, 6);
+    ctx.fillRect(w / 2 - 1, -h * 0.32, 3, 6);
+    ctx.fillRect(-w / 2 - 2, h * 0.14, 3, 6);
+    ctx.fillRect(w / 2 - 1, h * 0.14, 3, 6);
+
+    // Chasis principal
+    ctx.fillStyle = color;
+    ctx.fillRect(-w / 2, -h / 2, w, h);
+
+    // Capó / Franja central
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(-2, -h / 2 + 2, 4, h - 4);
+
+    // Parabrisas y luneta
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(-w / 2 + 2, -h * 0.18, w - 4, 5);
+    ctx.fillRect(-w / 2 + 3, h * 0.16, w - 6, 4);
+
+    // Alerón en modernos
+    if (carType === 'tc2000s' || carType === 'modern') {
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(-w / 2, h / 2 - 3, w, 3);
+    }
+
+    // Llamas de nitro si es el jugador
+    if (isPlayer && STATE.isNitroActive) {
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(-4, h / 2, 3, 8 + Math.random() * 6);
+        ctx.fillRect(1, h / 2, 3, 8 + Math.random() * 6);
+    }
+
+    ctx.restore();
+}
+
+// ============================================================================
+// 10C. AUTO DEL JUGADOR EN 3RA PERSONA (PERSECUCIÓN RETRO POR ÉPOCA)
+// ============================================================================
+function drawThirdPersonPlayerCar(era, circuit) {
+    const car = era.car;
+    const bounce = Math.sin(STATE.frameCounter * 0.55) * (STATE.speed / car.maxSpeed) * 1.5;
+    const cx = Math.floor(RENDER_W * 0.5 + STATE.steer * 14);
+    const cy = Math.floor(RENDER_H * 0.87 + bounce);
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(STATE.steer * 0.08);
+
+    const w = car.type === 'cupecita' ? 68 : 78;
+    const h = car.type === 'cupecita' ? 46 : 42;
+    const left = -w / 2;
+    const top = -h;
+
+    // Sombra debajo del vehículo
+    ctx.fillStyle = 'rgba(0,0,0,0.65)';
+    ctx.fillRect(left - 4, -5, w + 8, 8);
+
+    // Neumáticos traseros anchos con giro visual
+    ctx.fillStyle = '#09090b';
+    ctx.fillRect(left - 2, top + h * 0.42, 16, h * 0.58);
+    ctx.fillRect(left + w - 14, top + h * 0.42, 16, h * 0.58);
+
+    // Carrocería trasera histórica según la era
+    ctx.fillStyle = car.hoodColor;
+    if (car.type === 'cupecita') {
+        // Guardabarros curvos y baúl redondeado años 40
+        ctx.fillRect(left + 8, top + h * 0.32, w - 16, h * 0.54);
+        ctx.fillStyle = '#18181b';
+        ctx.fillRect(left + 16, top + 2, w - 32, h * 0.34);
+        // Rueda de auxilio clásica atrás
+        ctx.fillStyle = '#27272a';
+        ctx.beginPath();
+        ctx.arc(0, top + h * 0.56, 10, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#d4d4d8';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    } else {
+        // Silueta TC / TC2000 / Nueva Generación
+        ctx.fillRect(left + 4, top + h * 0.34, w - 8, h * 0.52);
+        // Techo y luneta trasera
+        ctx.fillStyle = '#18181b';
+        ctx.fillRect(left + 14, top + 4, w - 28, h * 0.32);
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(left + 18, top + 7, w - 36, h * 0.22);
+
+        // Franja deportiva central
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(-6, top + 4, 12, h * 0.8);
+    }
+
+    // Alerón trasero para Era 4 (2000s) y Era 5 (Actualidad)
+    if (car.type === 'tc2000s' || car.type === 'modern') {
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(left + 2, top + h * 0.22, w - 4, 5);
+        ctx.fillRect(left + 10, top + h * 0.27, 4, 5);
+        ctx.fillRect(left + w - 14, top + h * 0.27, 4, 5);
+    }
+
+    // Paragolpes / Difusor trasero
+    ctx.fillStyle = '#27272a';
+    ctx.fillRect(left + 6, top + h * 0.78, w - 12, 6);
+
+    // Luces de freno (brillan intensamente si se presiona FRENO)
+    const braking = KEYS.down;
+    ctx.fillStyle = braking ? '#ff1e1e' : '#991b1b';
+    ctx.fillRect(left + 8, top + h * 0.48, 14, 6);
+    ctx.fillRect(left + w - 22, top + h * 0.48, 14, 6);
+    if (braking) {
+        ctx.fillStyle = '#fca5a5';
+        ctx.fillRect(left + 10, top + h * 0.49, 10, 3);
+        ctx.fillRect(left + w - 20, top + h * 0.49, 10, 3);
+    }
+
+    // Escapes y llamas de Espíritu Nitro
+    ctx.fillStyle = '#71717a';
+    ctx.fillRect(left + 16, top + h * 0.84, 5, 4);
+    ctx.fillRect(left + w - 21, top + h * 0.84, 5, 4);
+
+    if (STATE.isNitroActive) {
+        const flameH = 10 + Math.random() * 10;
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(left + 15, top + h * 0.88, 7, flameH);
+        ctx.fillRect(left + w - 22, top + h * 0.88, 7, flameH);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(left + 17, top + h * 0.88, 3, flameH * 0.5);
+        ctx.fillRect(left + w - 20, top + h * 0.88, 3, flameH * 0.5);
+    }
+
+    ctx.restore();
+}
+
+// Sprites 2D de entorno pixelados
+function drawRoadsideSprite(sp, x, y, scale, clipY) {
+    const w = Math.max(2, scale * 95000);
+    const h = Math.max(2, scale * 130000);
+    if (y - h > clipY || x < -w || x > RENDER_W + w) return;
+
+    const drawX = Math.floor(x - w / 2);
+    const drawY = Math.floor(y - h);
+
+    if (sp.type === 'banner') {
+        // Cartel publicitario retro estilo automovilismo argentino
+        ctx.fillStyle = '#52525b';
+        ctx.fillRect(drawX + w * 0.15, drawY + h * 0.5, w * 0.1, h * 0.5);
+        ctx.fillRect(drawX + w * 0.75, drawY + h * 0.5, w * 0.1, h * 0.5);
+        ctx.fillStyle = sp.color;
+        ctx.fillRect(drawX, drawY + h * 0.25, w, h * 0.35);
+        ctx.strokeStyle = '#09090b';
+        ctx.strokeRect(drawX, drawY + h * 0.25, w, h * 0.35);
+    } else if (sp.type === 'tree' || sp.type === 'palm') {
+        // Tronco y copa pixelada
+        ctx.fillStyle = '#451a03';
+        ctx.fillRect(drawX + w * 0.4, drawY + h * 0.45, w * 0.2, h * 0.55);
+        ctx.fillStyle = sp.type === 'palm' ? '#15803d' : '#166534';
+        ctx.fillRect(drawX + w * 0.1, drawY + h * 0.1, w * 0.8, h * 0.45);
+        ctx.fillStyle = '#22c55e';
+        ctx.fillRect(drawX + w * 0.2, drawY, w * 0.6, h * 0.25);
+    } else if (sp.type === 'lamp') {
+        // Luminaria nocturna callejero Santa Fe
+        ctx.fillStyle = '#71717a';
+        ctx.fillRect(drawX + w * 0.45, drawY, w * 0.1, h);
+        ctx.fillStyle = '#fef08a';
+        ctx.fillRect(drawX + w * 0.25, drawY, w * 0.5, h * 0.12);
+    } else if (sp.type === 'crowd') {
+        // Público alentando al costado de la pista
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(drawX, drawY + h * 0.65, w, h * 0.35);
+        ctx.fillStyle = '#ef4444';
+        ctx.fillRect(drawX + w * 0.1, drawY + h * 0.55, w * 0.25, h * 0.15);
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(drawX + w * 0.55, drawY + h * 0.52, w * 0.25, h * 0.18);
+    }
+}
+
+// Sprites 2D de los autos rivales según la época
+function drawRivalCarSprite(rival, x, y, scale, clipY, carType, isNight) {
+    const w = Math.max(4, scale * 135000);
+    const h = Math.max(4, scale * 78000);
+    if (y - h > clipY || x < -w || x > RENDER_W + w) return;
+
+    const left = Math.floor(x - w / 2);
+    const top = Math.floor(y - h);
+
+    // Sombra bajo el auto
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.fillRect(left - 2, Math.floor(y - h * 0.12), w + 4, Math.max(2, h * 0.15));
+
+    // Neumáticos traseros anchos
+    ctx.fillStyle = '#09090b';
+    ctx.fillRect(left, top + h * 0.45, w * 0.22, h * 0.52);
+    ctx.fillRect(left + w * 0.78, top + h * 0.45, w * 0.22, h * 0.52);
+
+    // Carrocería principal
+    ctx.fillStyle = rival.color;
+    ctx.fillRect(left + w * 0.08, top + h * 0.35, w * 0.84, h * 0.5);
+
+    // Techo / Cabina
+    ctx.fillStyle = '#18181b';
+    ctx.fillRect(left + w * 0.22, top + h * 0.08, w * 0.56, h * 0.3);
+
+    // Alerón trasero para eras modernas (2000s y Actualidad)
+    if (carType === 'tc2000s' || carType === 'modern') {
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(left + w * 0.06, top + h * 0.22, w * 0.88, Math.max(2, h * 0.09));
+    }
+
+    // Luces traseras rojas brillantes (especialmente de noche)
+    ctx.fillStyle = isNight ? '#ff0000' : '#fca5a5';
+    ctx.fillRect(left + w * 0.14, top + h * 0.5, w * 0.18, Math.max(2, h * 0.12));
+    ctx.fillRect(left + w * 0.68, top + h * 0.5, w * 0.18, Math.max(2, h * 0.12));
+}
+
+// ============================================================================
+// 11. CABINA EN PRIMERA PERSONA POR ÉPOCA (ESTILO ARMA DE DOOM EN PRIMER PLANO)
+// ============================================================================
+function drawFirstPersonCockpit(era, circuit) {
+    const car = era.car;
+    const bounce = Math.sin(STATE.frameCounter * 0.5) * (STATE.speed / car.maxSpeed) * 1.8;
+
+    // 1. Capó delantero asomando por el parabrisas (típico de los TC y Cupecitas)
+    ctx.fillStyle = car.hoodColor;
+    ctx.beginPath();
+    ctx.moveTo(RENDER_W * 0.26, RENDER_H);
+    ctx.lineTo(RENDER_W * 0.36, RENDER_H * 0.74 + bounce);
+    ctx.lineTo(RENDER_W * 0.64, RENDER_H * 0.74 + bounce);
+    ctx.lineTo(RENDER_W * 0.74, RENDER_H);
+    ctx.closePath();
+    ctx.fill();
+
+    // Toma de aire / carburadores / motor en el capó según la era
+    ctx.fillStyle = '#18181b';
+    if (car.type === 'cupecita') {
+        // Trompa angosta clásica con radiador cromado
+        ctx.fillStyle = '#d4d4d8';
+        ctx.fillRect(RENDER_W * 0.46, RENDER_H * 0.72 + bounce, RENDER_W * 0.08, 8);
+    } else if (car.type === 'compacto70' || car.type === 'tc90') {
+        // Toma de aire dinámica del TC clásico
+        ctx.fillRect(RENDER_W * 0.43, RENDER_H * 0.71 + bounce, RENDER_W * 0.14, 10);
+        ctx.fillStyle = '#ef4444';
+        ctx.fillRect(RENDER_W * 0.45, RENDER_H * 0.72 + bounce, RENDER_W * 0.10, 4);
+    } else {
+        // Salidas de aire aerodinámicas Mustang / Camaro / TC2000
+        ctx.fillRect(RENDER_W * 0.39, RENDER_H * 0.74 + bounce, RENDER_W * 0.08, 6);
+        ctx.fillRect(RENDER_W * 0.53, RENDER_H * 0.74 + bounce, RENDER_W * 0.08, 6);
+    }
+
+    // 2. Parantes del parabrisas y Jaula Antivuelco
+    ctx.fillStyle = '#18181b';
+    // Parante izquierdo
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(24, 0);
+    ctx.lineTo(10, RENDER_H);
+    ctx.lineTo(0, RENDER_H);
+    ctx.fill();
+    // Parante derecho
+    ctx.beginPath();
+    ctx.moveTo(RENDER_W, 0);
+    ctx.lineTo(RENDER_W - 24, 0);
+    ctx.lineTo(RENDER_W - 10, RENDER_H);
+    ctx.lineTo(RENDER_W, RENDER_H);
+    ctx.fill();
+
+    // Espejo retrovisor interior arriba en el centro
+    ctx.fillStyle = '#27272a';
+    ctx.fillRect(RENDER_W * 0.42, 4, RENDER_W * 0.16, 11);
+    ctx.fillStyle = circuit.skyBottom;
+    ctx.fillRect(RENDER_W * 0.43, 6, RENDER_W * 0.14, 7);
+
+    // 3. Torpedo / Tablero inferior
+    ctx.fillStyle = car.dashColor;
+    ctx.fillRect(0, RENDER_H * 0.82 + bounce, RENDER_W, RENDER_H * 0.2);
+    ctx.fillStyle = '#3f3f46';
+    ctx.fillRect(0, RENDER_H * 0.82 + bounce, RENDER_W, 3);
+
+    // 4. Volante interactivo que gira con el jugador
+    const wheelCenterX = RENDER_W * 0.5;
+    const wheelCenterY = RENDER_H * 0.94 + bounce;
+    const wheelRadius = car.type === 'cupecita' ? 38 : 33;
+
+    ctx.save();
+    ctx.translate(wheelCenterX, wheelCenterY);
+    ctx.rotate(STATE.steer * 0.65);
+
+    // Aro del volante
+    ctx.strokeStyle = car.wheelColor;
+    ctx.lineWidth = car.type === 'cupecita' ? 5 : 7;
+    ctx.beginPath();
+    ctx.arc(0, 0, wheelRadius, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Marca superior amarilla en el volante de competición
+    ctx.fillStyle = '#facc15';
+    ctx.fillRect(-2, -wheelRadius - 3, 4, 7);
+
+    // Rayos del volante
+    ctx.fillStyle = '#52525b';
+    ctx.fillRect(-wheelRadius, -3, wheelRadius * 2, 6);
+    ctx.fillRect(-4, 0, 8, wheelRadius);
+
+    // Centro del volante (con pantalla LED si es Era 5 moderna)
+    if (car.type === 'modern') {
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(-14, -10, 28, 16);
+        ctx.fillStyle = '#22c55e';
+        ctx.fillRect(-11, -7, 6, 3);
+        ctx.fillStyle = '#eab308';
+        ctx.fillRect(-3, -7, 6, 3);
+        ctx.fillStyle = '#ef4444';
+        ctx.fillRect(5, -7, 6, 3);
+    } else {
+        ctx.fillStyle = era.spirit.accentColor;
+        ctx.beginPath();
+        ctx.arc(0, 0, 8, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Guantes del piloto sujetando el volante
+    ctx.fillStyle = era.spirit.helmetColor;
+    ctx.fillRect(-wheelRadius - 4, -8, 10, 16);
+    ctx.fillRect(wheelRadius - 6, -8, 10, 16);
+
+    ctx.restore();
+
+    // 5. Limpiaparabrisas animado si el circuito tiene lluvia
+    if (circuit.rain) {
+        const wiperAngle = Math.sin(STATE.frameCounter * 0.22) * 0.75;
+        ctx.save();
+        ctx.translate(RENDER_W * 0.35, RENDER_H * 0.82 + bounce);
+        ctx.rotate(wiperAngle);
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(-1, -48, 3, 48);
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(RENDER_W * 0.65, RENDER_H * 0.82 + bounce);
+        ctx.rotate(wiperAngle);
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(-1, -48, 3, 48);
+        ctx.restore();
+    }
+}
+
+// ============================================================================
+// 12. BUCLE PRINCIPAL DE ANIMACIÓN Y EVENTOS DE INTERFAZ
+// ============================================================================
+let lastTime = 0;
+
+function gameLoop(timestamp) {
+    if (!lastTime) lastTime = timestamp;
+    const dt = Math.min(0.05, (timestamp - lastTime) / 1000);
+    lastTime = timestamp;
+
+    if (STATE.mode === 'RACING') {
+        updatePhysics(dt);
+        renderWorld();
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+window.onload = function () {
+    // Inicializar segmentos LED del tacómetro en el HUD
+    const rpmBar = document.getElementById('rpmBarContainer');
+    for (let i = 0; i < 12; i++) {
+        const led = document.createElement('div');
+        led.className = 'flex-1 h-full bg-zinc-900';
+        rpmBar.appendChild(led);
+    }
+
+    // Dibujar retrato inicial en el HUD
+    drawSpiritPortrait(document.getElementById('hudPortraitCanvas'), ERAS_DATA[0].spirit, 'normal', 0);
+    updateSaveBadge();
+    setupShifterInteraction();
+
+    // Selectores de Transmisión y Cámara en Menú Principal
+    document.getElementById('btnTransAuto').onclick = () => {
+        STATE.transmission = 'AUTO';
+        updateTransmissionUI();
+        audio.playBeep(440, 0.08);
+    };
+    document.getElementById('btnTransManual').onclick = () => {
+        STATE.transmission = 'MANUAL';
+        updateTransmissionUI();
+        audio.playBeep(560, 0.08);
+    };
+
+    document.getElementById('btnCam1st').onclick = () => {
+        STATE.cameraMode = '1ST';
+        updateCameraUI();
+        audio.playBeep(500, 0.08);
+    };
+    document.getElementById('btnCam3rd').onclick = () => {
+        STATE.cameraMode = '3RD';
+        updateCameraUI();
+        audio.playBeep(500, 0.08);
+    };
+    document.getElementById('btnCamTop').onclick = () => {
+        STATE.cameraMode = 'TOP';
+        updateCameraUI();
+        audio.playBeep(500, 0.08);
+    };
+
+    // Botón de cambio de cámara en vivo durante la carrera y botones +/- de caja manual
+    document.getElementById('btnCameraToggle').onclick = () => cycleCamera();
+    document.getElementById('btnShiftUp').onclick = () => shiftGear(1);
+    document.getElementById('btnShiftDown').onclick = () => shiftGear(-1);
+
+    // Selectores rápidos en pantalla de Pausa
+    document.getElementById('btnPauseTrans').onclick = () => {
+        STATE.transmission = STATE.transmission === 'AUTO' ? 'MANUAL' : 'AUTO';
+        updateTransmissionUI();
+        audio.playBeep(520, 0.08);
+    };
+    document.getElementById('btnPauseCam').onclick = () => cycleCamera();
+
+    // Botones del Menú Principal
+    document.getElementById('btnStartStory').onclick = () => {
+        STATE.isCampaign = true;
+        const eraIdx = Math.floor(STATE.unlockedIndex / 5);
+        const circuitIdx = STATE.unlockedIndex % 5;
+        showStoryBriefing(eraIdx, circuitIdx);
+    };
+
+    document.getElementById('btnOpenSelector').onclick = () => {
+        renderSelectorScreen(Math.floor(STATE.unlockedIndex / 5));
+    };
+
+    document.getElementById('btnBackFromSelector').onclick = () => showMenu();
+    document.getElementById('btnStoryBack').onclick = () => showMenu();
+
+    document.getElementById('btnLaunchRace').onclick = () => {
+        startRace(STATE.currentEraIdx, STATE.currentCircuitIdx);
+    };
+
+    document.getElementById('btnRetryRace').onclick = () => {
+        startRace(STATE.currentEraIdx, STATE.currentCircuitIdx);
+    };
+
+    // Controles de Pausa y Audio
+    document.getElementById('btnPause').onclick = () => {
+        togglePause(STATE.mode === 'RACING');
+    };
+    document.getElementById('btnResume').onclick = () => togglePause(false);
+    document.getElementById('btnRestartPause').onclick = () => {
+        startRace(STATE.currentEraIdx, STATE.currentCircuitIdx);
+    };
+    document.getElementById('btnQuitToMenu').onclick = () => showMenu();
+
+    document.getElementById('btnAudioToggle').onclick = (e) => {
+        audio.enabled = !audio.enabled;
+        e.target.textContent = audio.enabled ? '🔊 SFX' : '🔇 MUTE';
+        if (!audio.enabled) audio.stopEngine();
+        else if (STATE.mode === 'RACING') audio.startEngine();
+    };
+
+    // Iniciar loop gráfico
+    requestAnimationFrame(gameLoop);
+
+    // Registrar Service Worker para soporte offline / PWA en GitHub Pages y celular
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+};
+</script>
+</body>
+</html>

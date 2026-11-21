@@ -1,0 +1,25 @@
+{
+  "name": "TC: el legado eterno",
+  "short_name": "TC Legado",
+  "description": "Juego de carreras retro estilo DOOM 1993 sobre la historia del Turismo Carretera y TC2000.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#050507",
+  "theme_color": "#8b0000",
+  "icons": [
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
